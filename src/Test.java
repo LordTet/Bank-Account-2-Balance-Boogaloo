@@ -2,13 +2,14 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
- 
+import java.util.Scanner;
+import java.io.File;
 public class Test extends StateBasedGame
 {
 
     public static void main(String[] args)
     {
-        System.out.println("lmao");
+    	System.out.println("lmao");
         try 
         {
         	AppGameContainer container = new AppGameContainer(new Test());
@@ -20,7 +21,6 @@ public class Test extends StateBasedGame
             e.printStackTrace();
         }
     }
- 
     public Test()
     {
         super("Test");
