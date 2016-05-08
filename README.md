@@ -11,6 +11,6 @@ Template / Slick2D tutorial
 http://lyndonarmitage.com/an-introduction-to-state-based-games-slick-library/
 
 Data structures final project by:
-Jake holtham
-Andrew Soque
-Christian Wettre
+Jake holtham;
+Andrew Soque;
+Christian Wettre;
