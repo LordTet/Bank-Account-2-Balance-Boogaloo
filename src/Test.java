@@ -7,7 +7,7 @@ public class Test extends StateBasedGame
 
     public static void main(String[] args)
     {
-        
+        System.out.println("lmao");
     }
  
     public Test(String name)
@@ -17,7 +17,7 @@ public class Test extends StateBasedGame
  
     public void initStatesList(GameContainer container) throws SlickException
     {
-        
+        addState(new MainMenu());
  
     }
  
