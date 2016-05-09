@@ -25,7 +25,7 @@ public class MainMenu extends BasicGameState
  
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException
 	{
-        // TODO Auto-generated method stub 
+        
 	}
  
     public int getID()
