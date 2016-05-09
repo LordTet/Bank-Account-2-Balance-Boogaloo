@@ -3,7 +3,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import java.util.Scanner;
-import java.io.File;
 public class Test extends StateBasedGame
 {
 
