@@ -8,9 +8,11 @@ import org.newdawn.slick.Color;
 public class MainMenu extends BasicGameState
 {
 	private StateBasedGame game;
+	private GameContainer container;
 	public void init(GameContainer container, StateBasedGame game) throws SlickException 
     {
         this.game = game;
+        this.container = container;
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
@@ -41,6 +43,8 @@ public class MainMenu extends BasicGameState
     	case 2:
     		game.enterState(1, new EmptyTransition(), new EmptyTransition());
     		break;
+    	case 3:
+    		container.exit();
     	}
     }
 }
