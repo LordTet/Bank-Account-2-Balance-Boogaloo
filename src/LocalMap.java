@@ -40,7 +40,7 @@ public class LocalMap extends BasicGameState
 			String current = x.next();
 			if(!current.equals("k"))
 			{
-				System.out.println(current);
+				//System.out.println(current);
 				map[row][col] = Integer.parseInt(current);
 			}
 		}
