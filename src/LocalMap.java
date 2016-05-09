@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 public class LocalMap extends BasicGameState
 {
 	
-	int[][] map;
+	Tile[][] tiles;
 	
 	//temporary static player positions
 	int playerx = 500;
@@ -19,7 +19,7 @@ public class LocalMap extends BasicGameState
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
-		map = new int[20][20];
+		tiles = new Tile[20][20];
 		File stage = new File("src/maps/0.txt");
 		Scanner x = null;
 		try 
@@ -41,7 +41,15 @@ public class LocalMap extends BasicGameState
 			if(!current.equals("k"))
 			{
 				//System.out.println(current);
-				map[row][col] = Integer.parseInt(current);
+				String path = "src/txtr/";
+				path += Integer.parseInt(current) + ".png";
+				tiles[row][col] = new Tile(path);
+				col++;
+			}
+			else
+			{
+				col = 0;
+				row++;
 			}
 		}
 		
@@ -50,6 +58,22 @@ public class LocalMap extends BasicGameState
 
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
+		int xloc = 100;
+		int yloc = 0;
+		
+		//tiles[0][1].sprite.draw(0,0);
+		
+		for(Tile[] x : tiles)
+		{
+			for(Tile y: x)
+			{
+				System.out.println(y.name);
+				y.sprite.draw(xloc,yloc);
+				xloc+=y.xsize;
+			}
+			xloc=100;
+			yloc+=x[0].ysize;
+		}
 		
 	}
 
