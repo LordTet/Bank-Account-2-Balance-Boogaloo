@@ -5,6 +5,8 @@ public class Tile
 	public int xsize = 30;
 	public int ysize = 30;
 	public String name;
+	public int cornerY = 0;
+	public int cornerX = 0;
 	
 	//TODO: implement walkable, interactable, etc.
 	
@@ -13,7 +15,7 @@ public class Tile
 		name = x;
 		try
 		{
-			System.out.println(x);
+			//System.out.println(x);
 			sprite = new Image(x);
 		}
 		catch(Exception e)

@@ -12,13 +12,17 @@ public class LocalMap extends BasicGameState
 {
 	
 	Tile[][] tiles;
+	boolean moving = true;
 	
 	//temporary static player positions
-	int playerx = 500;
-	int playery = 500;
-	
+
+	Player p1;
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
+		//make player position represent the tile, not coordinate.
+		
+		p1 = new Player(0,9,18);
+		
 		tiles = new Tile[20][20];
 		File stage = new File("src/maps/0.txt");
 		Scanner x = null;
@@ -54,8 +58,13 @@ public class LocalMap extends BasicGameState
 		}
 		
 		x.close();
+		
+		
 	}
 
+	
+	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
+	
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
 		int xloc = 100;
@@ -67,13 +76,18 @@ public class LocalMap extends BasicGameState
 		{
 			for(Tile y: x)
 			{
-				System.out.println(y.name);
+				//System.out.println(y.name);
 				y.sprite.draw(xloc,yloc);
+				y.cornerX = xloc;
+				y.cornerY = yloc;
 				xloc+=y.xsize;
 			}
 			xloc=100;
 			yloc+=x[0].ysize;
 		}
+		
+		
+		p1.draw(tiles[p1.x][p1.y]);
 		
 	}
 
@@ -82,8 +96,34 @@ public class LocalMap extends BasicGameState
 		
 	}
 	
-	public void keyReleased(int key, char c)
+	public void keyPressed(int key, char c)
 	{
+		System.out.println(key);
+		/*Up: 200
+		 *Down:208
+		 * Left:203
+		 * Right:205
+		 */
+		//TODO: Make sprite move
+		
+		switch(key)
+		{
+		case 200:
+			p1.sprite = p1.upSprite;
+			
+			break;
+		case 208:
+			p1.sprite = p1.downSprite;
+			break;
+		case 203:
+			p1.sprite = p1.leftSprite;
+			break;
+		case 205:
+			p1.sprite = p1.rightSprite;
+			break;
+		}
+		
+		
 		
 	}
 
