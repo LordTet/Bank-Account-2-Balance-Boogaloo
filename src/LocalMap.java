@@ -104,6 +104,7 @@ public class LocalMap extends BasicGameState
 			switch(p1.direction)
 			{
 				case 0:
+					
 					System.out.println("here");
 					dialogue = tiles[p1.x-1][p1.y].interact;
 					break;
@@ -117,7 +118,15 @@ public class LocalMap extends BasicGameState
 					dialogue = tiles[p1.x][p1.y-1].interact;
 					break;
 			}
-			arg2.drawString(dialogue, 230, 10);
+			if(dialogue != null)
+			{
+				arg2.drawString(dialogue, 230, 10);
+			}
+			else
+			{
+				interacting = !interacting;
+			}
+
 			
 		}
 		
