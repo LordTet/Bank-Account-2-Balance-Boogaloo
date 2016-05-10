@@ -13,14 +13,13 @@ public class LocalMap extends BasicGameState
 	
 	Tile[][] tiles;
 	boolean moving = true;
-	
+	GameContainer gc;
 	//temporary static player positions
 
 	Player p1;
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
-		//make player position represent the tile, not coordinate.
-		
+		gc = arg0;
 		p1 = new Player(0,9,18);
 		
 		tiles = new Tile[20][20];
@@ -47,7 +46,11 @@ public class LocalMap extends BasicGameState
 				//System.out.println(current);
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
-				tiles[row][col] = new Tile(path);
+				tiles[row][col] = new Tile(path,true);
+				if(Integer.parseInt(current) == 0)
+				{
+					tiles[row][col].walkable = false;
+				}
 				col++;
 			}
 			else
@@ -98,6 +101,10 @@ public class LocalMap extends BasicGameState
 	
 	public void keyPressed(int key, char c)
 	{
+		if(key == 1)
+		{
+			gc.exit();
+		}
 		System.out.println(key);
 		/*Up: 200
 		 *Down:208
@@ -110,16 +117,24 @@ public class LocalMap extends BasicGameState
 		{
 		case 200:
 			p1.sprite = p1.upSprite;
-			
+			System.out.println(tiles[p1.x-1][p1.y].walkable + "\n" + p1.x);
+			if(tiles[p1.x-1][p1.y].walkable)
+				p1.x--;
 			break;
 		case 208:
 			p1.sprite = p1.downSprite;
+			if(tiles[p1.x+1][p1.y].walkable)
+				p1.x++;
 			break;
 		case 203:
 			p1.sprite = p1.leftSprite;
+			if(tiles[p1.x][p1.y-1].walkable)
+				p1.y--;
 			break;
 		case 205:
 			p1.sprite = p1.rightSprite;
+			if(tiles[p1.x][p1.y+1].walkable)
+				p1.y++;
 			break;
 		}
 		

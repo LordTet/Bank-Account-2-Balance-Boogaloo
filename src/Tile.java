@@ -7,11 +7,13 @@ public class Tile
 	public String name;
 	public int cornerY = 0;
 	public int cornerX = 0;
+	public boolean walkable;
 	
 	//TODO: implement walkable, interactable, etc.
 	
-	public Tile(String x)
+	public Tile(String x, boolean w)
 	{
+		walkable = w;
 		name = x;
 		try
 		{
