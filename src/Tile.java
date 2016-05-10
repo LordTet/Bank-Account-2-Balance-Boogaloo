@@ -1,16 +1,23 @@
 import org.newdawn.slick.Image;
 public class Tile
 {
-	Image sprite;
-	int xsize = 50;
-	int ysize = 50;
+	public Image sprite;
+	public int xsize = 30;
+	public int ysize = 30;
+	public String name;
+	public int cornerY = 0;
+	public int cornerX = 0;
+	public boolean walkable;
 	
 	//TODO: implement walkable, interactable, etc.
 	
-	public Tile(String x)
+	public Tile(String x, boolean w)
 	{
+		walkable = w;
+		name = x;
 		try
 		{
+			//System.out.println(x);
 			sprite = new Image(x);
 		}
 		catch(Exception e)
