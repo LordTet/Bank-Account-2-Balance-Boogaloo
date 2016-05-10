@@ -14,6 +14,9 @@ public class LocalMap extends BasicGameState
 	Tile[][] tiles;
 	boolean moving = true;
 	GameContainer gc;
+	boolean interacting = false;
+	
+	
 	//temporary static player positions
 
 	Player p1;
@@ -50,6 +53,8 @@ public class LocalMap extends BasicGameState
 				if(Integer.parseInt(current) == 0)
 				{
 					tiles[row][col].walkable = false;
+					tiles[row][col].interactable = true;
+					tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
 				}
 				col++;
 			}
@@ -92,6 +97,30 @@ public class LocalMap extends BasicGameState
 		
 		p1.draw(tiles[p1.x][p1.y]);
 		
+		if(interacting)
+		{
+			String dialogue = null;
+			System.out.println(p1.direction);
+			switch(p1.direction)
+			{
+				case 0:
+					System.out.println("here");
+					dialogue = tiles[p1.x-1][p1.y].interact;
+					break;
+				case 1:
+					dialogue = tiles[p1.x][p1.y+1].interact;
+					break;
+				case 2:
+					dialogue = tiles[p1.x+1][p1.y].interact;
+					break;
+				case 3:
+					dialogue = tiles[p1.x][p1.y-1].interact;
+					break;
+			}
+			arg2.drawString(dialogue, 230, 10);
+			
+		}
+		
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
@@ -111,33 +140,59 @@ public class LocalMap extends BasicGameState
 		 * Left:203
 		 * Right:205
 		 */
-		//TODO: Make sprite move
+		//TODO: Interactable objects.
 		
-		switch(key)
+		if(key == 44)
 		{
-		case 200:
-			p1.sprite = p1.upSprite;
-			System.out.println(tiles[p1.x-1][p1.y].walkable + "\n" + p1.x);
-			if(tiles[p1.x-1][p1.y].walkable)
-				p1.x--;
-			break;
-		case 208:
-			p1.sprite = p1.downSprite;
-			if(tiles[p1.x+1][p1.y].walkable)
-				p1.x++;
-			break;
-		case 203:
-			p1.sprite = p1.leftSprite;
-			if(tiles[p1.x][p1.y-1].walkable)
-				p1.y--;
-			break;
-		case 205:
-			p1.sprite = p1.rightSprite;
-			if(tiles[p1.x][p1.y+1].walkable)
-				p1.y++;
-			break;
+			interacting = !interacting;
 		}
 		
+		if(!interacting)
+		{
+		
+			switch(key)
+			{
+			//up
+			case 200:
+				
+				p1.direction = 0;
+				p1.sprite = p1.upSprite;
+				System.out.println(tiles[p1.x-1][p1.y].walkable + "\n" + p1.x);
+				if(tiles[p1.x-1][p1.y].walkable)
+					p1.x--;
+				break;
+				
+			//down
+			case 208:
+				
+				
+				p1.sprite = p1.downSprite;
+				p1.direction = 2;
+				if(tiles[p1.x+1][p1.y].walkable)
+					p1.x++;
+				break;
+				
+			//left
+			case 203:
+				
+				p1.direction = 3;
+				p1.sprite = p1.leftSprite;
+				if(tiles[p1.x][p1.y-1].walkable)
+					p1.y--;
+				break;
+				
+			//right
+			case 205:
+				
+				p1.direction = 1;
+				p1.sprite = p1.rightSprite;
+				if(tiles[p1.x][p1.y+1].walkable)
+					p1.y++;
+				break;
+				
+
+			}
+		}
 		
 		
 	}

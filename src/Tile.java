@@ -8,8 +8,8 @@ public class Tile
 	public int cornerY = 0;
 	public int cornerX = 0;
 	public boolean walkable;
-	
-	//TODO: implement walkable, interactable, etc.
+	public String interact = null;
+	public boolean interactable = false;
 	
 	public Tile(String x, boolean w)
 	{
@@ -25,4 +25,6 @@ public class Tile
 			System.out.println("Image not found!");
 		}
 	}
+	
+
 }
