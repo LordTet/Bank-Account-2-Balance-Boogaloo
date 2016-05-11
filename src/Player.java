@@ -9,6 +9,8 @@ public class Player
 	public int x;
 	public int y;
 	public int direction;
+	public boolean moving = false;
+	public double between = 0;
 	
 	public Player(int dir,int x,int y)
 	{

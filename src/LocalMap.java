@@ -12,8 +12,11 @@ public class LocalMap extends BasicGameState
 {
 	
 	Tile[][] tiles;
-	boolean moving = true;
+	//boolean moving;
 	GameContainer gc;
+	boolean interacting = false;
+	
+	
 	//temporary static player positions
 
 	Player p1;
@@ -47,9 +50,18 @@ public class LocalMap extends BasicGameState
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
 				tiles[row][col] = new Tile(path,true);
-				if(Integer.parseInt(current) == 0)
+				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2)
 				{
 					tiles[row][col].walkable = false;
+					tiles[row][col].interactable = true;
+					if(Integer.parseInt(current) == 0)
+					{
+						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
+					}
+					else
+					{
+						tiles[row][col].interact = "This block is different...\nAlmost as if it's here exclusively to prove a point.";
+					}
 				}
 				col++;
 			}
@@ -89,8 +101,70 @@ public class LocalMap extends BasicGameState
 			yloc+=x[0].ysize;
 		}
 		
+		if(!p1.moving)
+		{
+			p1.draw(tiles[p1.x][p1.y]);
+		}
+		else
+		{
+			
+			if(p1.direction == 3)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX-(float)p1.between , tiles[p1.x][p1.y].cornerY);
+			}
+			else if(p1.direction == 1)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX+(float)p1.between , tiles[p1.x][p1.y].cornerY);
+			}
+			else if(p1.direction == 2)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY+(float)p1.between);
+			}
+			else if(p1.direction == 0)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
+			}
+				
+			p1.between+=.2;
+			if(p1.between >= 0.0)
+			{
+				p1.between = -30;
+				p1.moving = false;
+			}
+
+		}
 		
-		p1.draw(tiles[p1.x][p1.y]);
+		
+		if(interacting)
+		{
+			String dialogue = null;
+			switch(p1.direction)
+			{
+				case 0:
+					
+					dialogue = tiles[p1.x-1][p1.y].interact;
+					break;
+				case 1:
+					dialogue = tiles[p1.x][p1.y+1].interact;
+					break;
+				case 2:
+					dialogue = tiles[p1.x+1][p1.y].interact;
+					break;
+				case 3:
+					dialogue = tiles[p1.x][p1.y-1].interact;
+					break;
+			}
+			if(dialogue != null)
+			{
+				arg2.drawString(dialogue, 230, 10);
+			}
+			else
+			{
+				interacting = !interacting;
+			}
+
+			
+		}
 		
 	}
 
@@ -111,33 +185,75 @@ public class LocalMap extends BasicGameState
 		 * Left:203
 		 * Right:205
 		 */
-		//TODO: Make sprite move
+		//TODO: Interactable objects.
 		
-		switch(key)
+		if(key == 44)
 		{
-		case 200:
-			p1.sprite = p1.upSprite;
-			System.out.println(tiles[p1.x-1][p1.y].walkable + "\n" + p1.x);
-			if(tiles[p1.x-1][p1.y].walkable)
-				p1.x--;
-			break;
-		case 208:
-			p1.sprite = p1.downSprite;
-			if(tiles[p1.x+1][p1.y].walkable)
-				p1.x++;
-			break;
-		case 203:
-			p1.sprite = p1.leftSprite;
-			if(tiles[p1.x][p1.y-1].walkable)
-				p1.y--;
-			break;
-		case 205:
-			p1.sprite = p1.rightSprite;
-			if(tiles[p1.x][p1.y+1].walkable)
-				p1.y++;
-			break;
+			interacting = !interacting;
 		}
 		
+		if(!interacting && !p1.moving)
+		{
+		
+			switch(key)
+			{
+			//up
+			case 200:
+				
+				p1.direction = 0;
+				p1.sprite = p1.upSprite;
+				if(tiles[p1.x-1][p1.y].walkable)
+				{
+					p1.x--;
+					p1.between = -30;
+					p1.moving = true;
+				}
+
+				break;
+				
+			//down
+			case 208:
+				
+				
+				p1.sprite = p1.downSprite;
+				p1.direction = 2;
+				if(tiles[p1.x+1][p1.y].walkable)
+				{
+					p1.x++;
+					p1.between = -30;
+					p1.moving = true;
+				}
+				break;
+				
+			//left
+			case 203:
+				
+				p1.direction = 3;
+				p1.sprite = p1.leftSprite;
+				if(tiles[p1.x][p1.y-1].walkable)
+				{
+					p1.moving = true;
+					p1.between = -30;
+					p1.y--;
+				}
+				break;
+				
+			//right
+			case 205:
+				
+				p1.direction = 1;
+				p1.sprite = p1.rightSprite;
+				if(tiles[p1.x][p1.y+1].walkable)
+				{
+					p1.y++;
+					p1.between = -30;
+					p1.moving = true;
+				}
+				break;
+				
+
+			}
+		}
 		
 		
 	}
