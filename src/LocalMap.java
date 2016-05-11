@@ -94,8 +94,38 @@ public class LocalMap extends BasicGameState
 			yloc+=x[0].ysize;
 		}
 		
+		if(!p1.moving)
+		{
+			p1.draw(tiles[p1.x][p1.y]);
+		}
+		else
+		{
+			
+			if(p1.direction == 3)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX-(float)p1.between , tiles[p1.x][p1.y].cornerY);
+			}
+			else if(p1.direction == 1)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX+(float)p1.between , tiles[p1.x][p1.y].cornerY);
+			}
+			else if(p1.direction == 2)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY+(float)p1.between);
+			}
+			else if(p1.direction == 0)
+			{
+				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
+			}
+				
+			p1.between+=.05;
+			if(p1.between >= 0.0)
+			{
+				p1.between = -30;
+				p1.moving = false;
+			}
+		}
 		
-		p1.draw(tiles[p1.x][p1.y]);
 		
 		if(interacting)
 		{
@@ -105,7 +135,6 @@ public class LocalMap extends BasicGameState
 			{
 				case 0:
 					
-					System.out.println("here");
 					dialogue = tiles[p1.x-1][p1.y].interact;
 					break;
 				case 1:
@@ -168,7 +197,12 @@ public class LocalMap extends BasicGameState
 				p1.sprite = p1.upSprite;
 				System.out.println(tiles[p1.x-1][p1.y].walkable + "\n" + p1.x);
 				if(tiles[p1.x-1][p1.y].walkable)
+				{
 					p1.x--;
+					p1.between = -30;
+					p1.moving = true;
+				}
+
 				break;
 				
 			//down
@@ -178,7 +212,11 @@ public class LocalMap extends BasicGameState
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
 				if(tiles[p1.x+1][p1.y].walkable)
+				{
 					p1.x++;
+					p1.between = -30;
+					p1.moving = true;
+				}
 				break;
 				
 			//left
@@ -187,7 +225,11 @@ public class LocalMap extends BasicGameState
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
 				if(tiles[p1.x][p1.y-1].walkable)
+				{
+					p1.moving = true;
+					p1.between = -30;
 					p1.y--;
+				}
 				break;
 				
 			//right
@@ -196,7 +238,11 @@ public class LocalMap extends BasicGameState
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
 				if(tiles[p1.x][p1.y+1].walkable)
+				{
 					p1.y++;
+					p1.between = -30;
+					p1.moving = true;
+				}
 				break;
 				
 
