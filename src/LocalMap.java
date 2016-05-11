@@ -12,7 +12,7 @@ public class LocalMap extends BasicGameState
 {
 	
 	Tile[][] tiles;
-	boolean moving = true;
+	//boolean moving;
 	GameContainer gc;
 	boolean interacting = false;
 	
@@ -50,11 +50,18 @@ public class LocalMap extends BasicGameState
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
 				tiles[row][col] = new Tile(path,true);
-				if(Integer.parseInt(current) == 0)
+				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2)
 				{
 					tiles[row][col].walkable = false;
 					tiles[row][col].interactable = true;
-					tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
+					if(Integer.parseInt(current) == 0)
+					{
+						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
+					}
+					else
+					{
+						tiles[row][col].interact = "This block is different...\nAlmost as if it's here exclusively to prove a point.";
+					}
 				}
 				col++;
 			}
@@ -118,19 +125,19 @@ public class LocalMap extends BasicGameState
 				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
-			p1.between+=.05;
+			p1.between+=.2;
 			if(p1.between >= 0.0)
 			{
 				p1.between = -30;
 				p1.moving = false;
 			}
+
 		}
 		
 		
 		if(interacting)
 		{
 			String dialogue = null;
-			System.out.println(p1.direction);
 			switch(p1.direction)
 			{
 				case 0:
@@ -185,7 +192,7 @@ public class LocalMap extends BasicGameState
 			interacting = !interacting;
 		}
 		
-		if(!interacting)
+		if(!interacting && !p1.moving)
 		{
 		
 			switch(key)
@@ -195,7 +202,6 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
-				System.out.println(tiles[p1.x-1][p1.y].walkable + "\n" + p1.x);
 				if(tiles[p1.x-1][p1.y].walkable)
 				{
 					p1.x--;
