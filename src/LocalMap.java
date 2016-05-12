@@ -14,8 +14,9 @@ public class LocalMap extends BasicGameState
 	Tile[][] tiles;
 	//boolean moving;
 	GameContainer gc;
-	boolean interacting = false;
+	boolean interacting = true;
 	String introText = null;
+	boolean intro = true;
 	
 	//temporary static player positions
 
@@ -34,10 +35,11 @@ public class LocalMap extends BasicGameState
 			e.printStackTrace();
 		}
 		introText = x.nextLine();
+		intro = true;
+		interacting = true;
 		
 		int row = 0;
 		int col = 0;
-		System.out.println("introText");
 		
 		while(x.hasNext())
 		{
@@ -48,17 +50,13 @@ public class LocalMap extends BasicGameState
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
 				tiles[row][col] = new Tile(path,true);
-				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2)
+				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
 				{
 					tiles[row][col].walkable = false;
 					tiles[row][col].interactable = true;
 					if(Integer.parseInt(current) == 0)
 					{
 						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
-					}
-					else
-					{
-						tiles[row][col].interact = "Woh, the teleprot.";
 					}
 				}
 				col++;
@@ -142,7 +140,7 @@ public class LocalMap extends BasicGameState
 		}
 		
 		
-		if(interacting && introText == null))
+		if(interacting && !intro)
 		{
 			Tile interacted = null;
 			switch(p1.direction)
@@ -168,22 +166,21 @@ public class LocalMap extends BasicGameState
 			}
 			if(dialogue != null)
 			{
+				System.out.println("ayy");
 				arg2.drawString(dialogue, 230, 10);
 			}
-			else
+			else if(dialogue == null && !intro)
 			{
 				interacting = !interacting;
 			}
 			
-			
-
-			
 		}
-		else if(interacting && introText!=null)
+		
+		
+		else if(intro)
 		{
 			arg2.drawString(introText, 230, 10);
 		}
-
 		
 	}
 
@@ -209,6 +206,7 @@ public class LocalMap extends BasicGameState
 		if(key == 44)
 		{
 			interacting = !interacting;
+			intro = false;
 		}
 		
 		if(!interacting && !p1.moving)
