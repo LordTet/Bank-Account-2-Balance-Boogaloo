@@ -15,18 +15,15 @@ public class LocalMap extends BasicGameState
 	//boolean moving;
 	GameContainer gc;
 	boolean interacting = false;
-	
+	String introText = null;
 	
 	//temporary static player positions
 
 	Player p1;
-	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
+	
+	public void changeMap(int mapnum)
 	{
-		gc = arg0;
-		p1 = new Player(0,9,18);
-		
-		tiles = new Tile[20][20];
-		File stage = new File("src/maps/0.txt");
+		File stage = new File("src/maps/" + mapnum + ".txt");
 		Scanner x = null;
 		try 
 		{
@@ -36,10 +33,11 @@ public class LocalMap extends BasicGameState
 		{
 			e.printStackTrace();
 		}
+		introText = x.nextLine();
 		
 		int row = 0;
 		int col = 0;
-		
+		System.out.println("introText");
 		
 		while(x.hasNext())
 		{
@@ -60,7 +58,7 @@ public class LocalMap extends BasicGameState
 					}
 					else
 					{
-						tiles[row][col].interact = "This block is different...\nAlmost as if it's here exclusively to prove a point.";
+						tiles[row][col].interact = "Woh, the teleprot.";
 					}
 				}
 				col++;
@@ -73,6 +71,15 @@ public class LocalMap extends BasicGameState
 		}
 		
 		x.close();
+	}
+	
+	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
+	{
+		gc = arg0;
+		p1 = new Player(0,9,18);
+		tiles = new Tile[20][20];
+		changeMap(0);
+
 		
 		
 	}
@@ -135,24 +142,29 @@ public class LocalMap extends BasicGameState
 		}
 		
 		
-		if(interacting)
+		if(interacting && introText == null))
 		{
-			String dialogue = null;
+			Tile interacted = null;
 			switch(p1.direction)
 			{
 				case 0:
 					
-					dialogue = tiles[p1.x-1][p1.y].interact;
+					interacted = tiles[p1.x-1][p1.y];
 					break;
 				case 1:
-					dialogue = tiles[p1.x][p1.y+1].interact;
+					interacted = tiles[p1.x][p1.y+1];
 					break;
 				case 2:
-					dialogue = tiles[p1.x+1][p1.y].interact;
+					interacted = tiles[p1.x+1][p1.y];
 					break;
 				case 3:
-					dialogue = tiles[p1.x][p1.y-1].interact;
+					interacted = tiles[p1.x][p1.y-1];
 					break;
+			}
+			String dialogue = interacted.interact;
+			if(interacted.name.equals("src/txtr/2.png"))
+			{
+				changeMap(1);
 			}
 			if(dialogue != null)
 			{
@@ -162,9 +174,16 @@ public class LocalMap extends BasicGameState
 			{
 				interacting = !interacting;
 			}
+			
+			
 
 			
 		}
+		else if(interacting && introText!=null)
+		{
+			arg2.drawString(introText, 230, 10);
+		}
+
 		
 	}
 
