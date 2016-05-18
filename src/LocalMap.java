@@ -130,7 +130,7 @@ public class LocalMap extends BasicGameState
 				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
-			p1.between+=.2;
+			p1.between+=1.5;
 			if(p1.between >= 0.0)
 			{
 				p1.between = -30;
