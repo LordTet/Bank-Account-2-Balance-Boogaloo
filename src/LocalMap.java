@@ -22,8 +22,11 @@ public class LocalMap extends BasicGameState
 
 	Player p1;
 	
+	//Return 2d array of the correct size for tile.
+	
 	public void changeMap(int mapnum)
 	{
+		tiles = new Tile[20][20];
 		File stage = new File("src/maps/" + mapnum + ".txt");
 		Scanner x = null;
 		try 
@@ -34,12 +37,44 @@ public class LocalMap extends BasicGameState
 		{
 			e.printStackTrace();
 		}
+		
 		introText = x.nextLine();
 		intro = true;
 		interacting = true;
 		
 		int row = 0;
 		int col = 0;
+		int maxCol = 0;
+		while(x.hasNext())
+		{
+			col++;
+			if(x.next().equals("k"))
+			{
+				row++;
+				col--;
+				if(col > maxCol)
+				{
+					maxCol = col;
+				}
+				col = 0;
+			}
+		}
+		System.out.println("row: " + row + " col: " + maxCol);
+		
+		
+		try
+		{
+			x = new Scanner(stage);
+			x.nextLine();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		row = 0;
+		col = 0;
+		
 		
 		while(x.hasNext())
 		{
@@ -50,6 +85,9 @@ public class LocalMap extends BasicGameState
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
 				tiles[row][col] = new Tile(path,true);
+				
+				
+				//Generalize further, implement to file.
 				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
 				{
 					tiles[row][col].walkable = false;
@@ -59,6 +97,7 @@ public class LocalMap extends BasicGameState
 						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
 					}
 				}
+				
 				col++;
 			}
 			else
@@ -75,7 +114,6 @@ public class LocalMap extends BasicGameState
 	{
 		gc = arg0;
 		p1 = new Player(0,9,18);
-		tiles = new Tile[20][20];
 		changeMap(0);
 
 		

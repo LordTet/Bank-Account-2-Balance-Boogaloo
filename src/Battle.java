@@ -35,7 +35,7 @@ public class Battle extends BasicGameState
 
 	public int getID()
 	{
-		return 0;
+		return 3;
 	}
 	
 }
