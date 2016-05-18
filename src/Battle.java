@@ -11,16 +11,21 @@ public class Battle extends BasicGameState
 {
 	GameContainer gc;
 	StateBasedGame game;
+	Image player;
+	Image opponent;
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		gc = arg0;
 		game = arg1;
+		
 	}
 
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
-		arg2.drawRect(400, 500, 100, 100);
+		arg2.drawRect(50, 400, 700, 150);
+		//TODO: Fight, Item, Flee buttons.
+		
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
