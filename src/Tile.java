@@ -11,10 +11,11 @@ public class Tile
 	public String interact = null;
 	public boolean interactable = false;
 	
-	public Tile(String x, boolean w)
+	public Tile(String x, boolean w, String y)
 	{
 		walkable = w;
 		name = x;
+		interact = y;
 		try
 		{
 			//System.out.println(x);

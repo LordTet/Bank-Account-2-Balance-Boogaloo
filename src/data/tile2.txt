@@ -1,0 +1,3 @@
+src/txtr/2.png
+false
+ayylmao

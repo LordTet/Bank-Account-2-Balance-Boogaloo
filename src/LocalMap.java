@@ -61,34 +61,44 @@ public class LocalMap extends BasicGameState
 		}
 		System.out.println("row: " + row + " col: " + maxCol);
 		
+		tiles = new Tile[row][maxCol];
+		
 		
 		try
 		{
+			x.close();
 			x = new Scanner(stage);
 			x.nextLine();
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			//System.out.println(e);
 		}
+		
 		
 		row = 0;
 		col = 0;
 		
-		
-		while(x.hasNext())
+		String current = "k";
+		while(!current.equals("j"))
 		{
-			String current = x.next();
-			if(!current.equals("k"))
+			current = x.next();
+			
+			//TODO: make map generation draw nothing on null.
+			if(current.equals("x"))
+			{
+				tiles[row][col] = null;
+			}
+			else if(!current.equals("k") && !current.equals("j"))
 			{
 				//System.out.println(current);
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
-				tiles[row][col] = new Tile(path,true);
+				//tiles[row][col] = new Tile(path,true);
 				
 				
 				//Generalize further, implement to file.
-				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
+				/*if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
 				{
 					tiles[row][col].walkable = false;
 					tiles[row][col].interactable = true;
@@ -96,9 +106,25 @@ public class LocalMap extends BasicGameState
 					{
 						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
 					}
+				}*/
+				
+				
+				Scanner tileScanner = null;
+				try
+				{
+					tileScanner = new Scanner(new File("src/data/tile" + current + ".txt"));
+				}
+				catch(Exception e)
+				{
+					System.out.println(e);
 				}
 				
+				tiles[row][col] = new Tile(tileScanner.nextLine(), tileScanner.nextBoolean(), tileScanner.nextLine());
 				col++;
+			}
+			else if(current.equals("j"))
+			{
+				row--;
 			}
 			else
 			{
@@ -202,12 +228,12 @@ public class LocalMap extends BasicGameState
 			{
 				changeMap(1);
 			}
-			if(dialogue != null)
+			if(!dialogue.equals(""))
 			{
-				System.out.println("ayy");
+				System.out.println(dialogue);
 				arg2.drawString(dialogue, 230, 10);
 			}
-			else if(dialogue == null && !intro)
+			else if(dialogue.equals("") && !intro)
 			{
 				interacting = !interacting;
 			}
