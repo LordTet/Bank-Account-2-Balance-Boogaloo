@@ -119,7 +119,8 @@ public class LocalMap extends BasicGameState
 					System.out.println(e);
 				}
 				
-				tiles[row][col] = new Tile(tileScanner.nextLine(), tileScanner.nextBoolean(), tileScanner.nextLine());
+				tiles[row][col] = new Tile(tileScanner.next(), tileScanner.nextBoolean(), tileScanner.next());
+				//System.out.println("Tile: " + tiles[row][col].name + " " + tiles[row][col].interact);
 				col++;
 			}
 			else if(current.equals("j"))
@@ -224,23 +225,17 @@ public class LocalMap extends BasicGameState
 					break;
 			}
 			String dialogue = interacted.interact;
-			if(interacted.name.equals("src/txtr/2.png"))
+			System.out.println(dialogue);
+			if(!dialogue.equals("null"))
 			{
-				changeMap(1);
-			}
-			if(!dialogue.equals(""))
-			{
-				System.out.println(dialogue);
 				arg2.drawString(dialogue, 230, 10);
 			}
-			else if(dialogue.equals("") && !intro)
+			else if(dialogue.equals("null") && !intro)
 			{
 				interacting = !interacting;
 			}
 			
 		}
-		
-		
 		else if(intro)
 		{
 			arg2.drawString(introText, 230, 10);
