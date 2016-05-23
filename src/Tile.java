@@ -11,15 +11,20 @@ public class Tile
 	public String interact = null;
 	public boolean interactable = false;
 	
+<<<<<<< HEAD
 	public boolean[] properties;
 	
 	public Tile(String x, boolean w)
+=======
+	public Tile(String x, boolean w, String y)
+>>>>>>> origin/master
 	{
 		properties = new boolean[5];
 		walkable = w;
 		properties[0] = walkable;
 		
 		name = x;
+		interact = y;
 		try
 		{
 			//System.out.println(x);
