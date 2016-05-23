@@ -118,7 +118,12 @@ public class LocalMap extends BasicGameState
 				{
 					System.out.println(e);
 				}
-				
+				/*String spritePath = tileScanner.next();
+				String walk = tileScanner.nextBoolean();
+				String interact = "";
+				String current
+				while()
+				*/
 				tiles[row][col] = new Tile(tileScanner.next(), tileScanner.nextBoolean(), tileScanner.next());
 				//System.out.println("Tile: " + tiles[row][col].name + " " + tiles[row][col].interact);
 				col++;
@@ -146,9 +151,6 @@ public class LocalMap extends BasicGameState
 		
 		
 	}
-
-	
-	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
 	
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
