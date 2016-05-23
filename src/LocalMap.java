@@ -22,8 +22,11 @@ public class LocalMap extends BasicGameState
 
 	Player p1;
 	
+	//Return 2d array of the correct size for tile.
+	
 	public void changeMap(int mapnum)
 	{
+		tiles = new Tile[20][20];
 		File stage = new File("src/maps/" + mapnum + ".txt");
 		Scanner x = null;
 		try 
@@ -34,23 +37,68 @@ public class LocalMap extends BasicGameState
 		{
 			e.printStackTrace();
 		}
+		
 		introText = x.nextLine();
 		intro = true;
 		interacting = true;
 		
 		int row = 0;
 		int col = 0;
-		
+		int maxCol = 0;
 		while(x.hasNext())
 		{
-			String current = x.next();
-			if(!current.equals("k"))
+			col++;
+			if(x.next().equals("k"))
+			{
+				row++;
+				col--;
+				if(col > maxCol)
+				{
+					maxCol = col;
+				}
+				col = 0;
+			}
+		}
+		System.out.println("row: " + row + " col: " + maxCol);
+		
+		tiles = new Tile[row][maxCol];
+		
+		
+		try
+		{
+			x.close();
+			x = new Scanner(stage);
+			x.nextLine();
+		}
+		catch(Exception e)
+		{
+			//System.out.println(e);
+		}
+		
+		
+		row = 0;
+		col = 0;
+		
+		String current = "k";
+		while(!current.equals("j"))
+		{
+			current = x.next();
+			
+			//TODO: make map generation draw nothing on null.
+			if(current.equals("x"))
+			{
+				tiles[row][col] = null;
+			}
+			else if(!current.equals("k") && !current.equals("j"))
 			{
 				//System.out.println(current);
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
-				tiles[row][col] = new Tile(path,true);
-				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
+				//tiles[row][col] = new Tile(path,true);
+				
+				
+				//Generalize further, implement to file.
+				/*if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
 				{
 					tiles[row][col].walkable = false;
 					tiles[row][col].interactable = true;
@@ -58,8 +106,31 @@ public class LocalMap extends BasicGameState
 					{
 						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
 					}
+				}*/
+				
+				
+				Scanner tileScanner = null;
+				try
+				{
+					tileScanner = new Scanner(new File("src/data/tile" + current + ".txt"));
 				}
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+				/*String spritePath = tileScanner.next();
+				String walk = tileScanner.nextBoolean();
+				String interact = "";
+				String current
+				while()
+				*/
+				tiles[row][col] = new Tile(tileScanner.next(), tileScanner.nextBoolean(), tileScanner.next());
+				//System.out.println("Tile: " + tiles[row][col].name + " " + tiles[row][col].interact);
 				col++;
+			}
+			else if(current.equals("j"))
+			{
+				row--;
 			}
 			else
 			{
@@ -75,15 +146,11 @@ public class LocalMap extends BasicGameState
 	{
 		gc = arg0;
 		p1 = new Player(0,9,18);
-		tiles = new Tile[20][20];
 		changeMap(0);
 
 		
 		
 	}
-
-	
-	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
 	
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
@@ -160,23 +227,17 @@ public class LocalMap extends BasicGameState
 					break;
 			}
 			String dialogue = interacted.interact;
-			if(interacted.name.equals("src/txtr/2.png"))
+			System.out.println(dialogue);
+			if(!dialogue.equals("null"))
 			{
-				changeMap(1);
-			}
-			if(dialogue != null)
-			{
-				System.out.println("ayy");
 				arg2.drawString(dialogue, 230, 10);
 			}
-			else if(dialogue == null && !intro)
+			else if(dialogue.equals("null") && !intro)
 			{
 				interacting = !interacting;
 			}
 			
 		}
-		
-		
 		else if(intro)
 		{
 			arg2.drawString(introText, 230, 10);
