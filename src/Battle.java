@@ -25,7 +25,6 @@ public class Battle extends BasicGameState
 	{
 		arg2.drawRect(50, 400, 700, 150);
 		//TODO: Fight, Item, Flee buttons.
-		
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
