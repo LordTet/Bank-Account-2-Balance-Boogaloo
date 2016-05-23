@@ -11,9 +11,14 @@ public class Tile
 	public String interact = null;
 	public boolean interactable = false;
 	
+	public boolean[] properties;
+	
 	public Tile(String x, boolean w)
 	{
+		properties = new boolean[5];
 		walkable = w;
+		properties[0] = walkable;
+		
 		name = x;
 		try
 		{
@@ -22,7 +27,7 @@ public class Tile
 		}
 		catch(Exception e)
 		{
-			System.out.println("Image not found!");
+			System.out.println("Image " + name + " not found!");
 		}
 	}
 	

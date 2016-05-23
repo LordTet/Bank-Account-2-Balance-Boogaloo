@@ -1,12 +1,15 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Image;
+
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 
 public class LocalMap extends BasicGameState
 {
@@ -17,6 +20,7 @@ public class LocalMap extends BasicGameState
 	boolean interacting = true;
 	String introText = null;
 	boolean intro = true;
+
 	
 	//temporary static player positions
 
@@ -77,11 +81,11 @@ public class LocalMap extends BasicGameState
 		p1 = new Player(0,9,18);
 		tiles = new Tile[20][20];
 		changeMap(0);
-
+		
 		
 		
 	}
-
+    
 	
 	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
 	
