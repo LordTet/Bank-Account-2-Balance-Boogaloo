@@ -5,153 +5,40 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Image;
 import java.util.Scanner;
+import java.util.Set;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class LocalMap extends BasicGameState
 {
+
+	Map[] maps;
 	
-	Tile[][] tiles;
-	//boolean moving;
+	
+	Map currentMap;
 	GameContainer gc;
 	boolean interacting = true;
-	String introText = null;
-	boolean intro = true;
-	
-	//temporary static player positions
+	public String introText = null;
+	public boolean intro = true;
 
 	Player p1;
-	
-	//Return 2d array of the correct size for tile.
-	
-	public void changeMap(int mapnum)
-	{
-		tiles = new Tile[20][20];
-		File stage = new File("src/maps/" + mapnum + ".txt");
-		Scanner x = null;
-		try 
-		{
-			x = new Scanner(stage);
-		} 
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		
-		introText = x.nextLine();
-		intro = true;
-		interacting = true;
-		
-		int row = 0;
-		int col = 0;
-		int maxCol = 0;
-		while(x.hasNext())
-		{
-			col++;
-			if(x.next().equals("k"))
-			{
-				row++;
-				col--;
-				if(col > maxCol)
-				{
-					maxCol = col;
-				}
-				col = 0;
-			}
-		}
-		System.out.println("row: " + row + " col: " + maxCol);
-		
-		tiles = new Tile[row][maxCol];
-		
-		
-		try
-		{
-			x.close();
-			x = new Scanner(stage);
-			x.nextLine();
-		}
-		catch(Exception e)
-		{
-			//System.out.println(e);
-		}
-		
-		
-		row = 0;
-		col = 0;
-		
-		String current = "k";
-		while(!current.equals("j"))
-		{
-			current = x.next();
-			
-			//TODO: make map generation draw nothing on null.
-			if(current.equals("x"))
-			{
-				tiles[row][col] = null;
-			}
-			else if(!current.equals("k") && !current.equals("j"))
-			{
-				//System.out.println(current);
-				String path = "src/txtr/";
-				path += Integer.parseInt(current) + ".png";
-				//tiles[row][col] = new Tile(path,true);
-				
-				
-				//Generalize further, implement to file.
-				/*if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
-				{
-					tiles[row][col].walkable = false;
-					tiles[row][col].interactable = true;
-					if(Integer.parseInt(current) == 0)
-					{
-						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
-					}
-				}*/
-				
-				
-				Scanner tileScanner = null;
-				try
-				{
-					tileScanner = new Scanner(new File("src/data/tile" + current + ".txt"));
-				}
-				catch(Exception e)
-				{
-					System.out.println(e);
-				}
-				/*String spritePath = tileScanner.next();
-				String walk = tileScanner.nextBoolean();
-				String interact = "";
-				String current
-				while()
-				*/
-				tiles[row][col] = new Tile(tileScanner.next(), tileScanner.nextBoolean(), tileScanner.next());
-				//System.out.println("Tile: " + tiles[row][col].name + " " + tiles[row][col].interact);
-				col++;
-			}
-			else if(current.equals("j"))
-			{
-				row--;
-			}
-			else
-			{
-				col = 0;
-				row++;
-			}
-		}
-		
-		x.close();
-	}
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		gc = arg0;
 		p1 = new Player(0,9,18);
+		//read the amount of files in folder of maps, create array of maps.
+		
 		changeMap(0);
 
 		
 		
 	}
 	
+	public void changeMap(int id)
+	{
+		currentMap = maps[id];
+	}
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
 		int xloc = 100;
@@ -227,7 +114,7 @@ public class LocalMap extends BasicGameState
 					break;
 			}
 			String dialogue = interacted.interact;
-			System.out.println(dialogue);
+
 			if(!dialogue.equals("null"))
 			{
 				arg2.drawString(dialogue, 230, 10);
