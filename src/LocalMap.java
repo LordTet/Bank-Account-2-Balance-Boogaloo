@@ -56,7 +56,7 @@ public class LocalMap extends BasicGameState
 				tiles[row][col] = new Tile(path,true);
 				if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
 				{
-					tiles[row][col].walkable = false;
+					tiles[row][col].properties[0] = false;
 					tiles[row][col].interactable = true;
 					if(Integer.parseInt(current) == 0)
 					{
@@ -223,7 +223,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
-				if(tiles[p1.x-1][p1.y].walkable)
+				if(tiles[p1.x-1][p1.y].properties[0])
 				{
 					p1.x--;
 					p1.between = -30;
@@ -238,7 +238,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
-				if(tiles[p1.x+1][p1.y].walkable)
+				if(tiles[p1.x+1][p1.y].properties[0])
 				{
 					p1.x++;
 					p1.between = -30;
@@ -251,7 +251,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
-				if(tiles[p1.x][p1.y-1].walkable)
+				if(tiles[p1.x][p1.y-1].properties[0])
 				{
 					p1.moving = true;
 					p1.between = -30;
@@ -264,7 +264,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
-				if(tiles[p1.x][p1.y+1].walkable)
+				if(tiles[p1.x][p1.y+1].properties[0])
 				{
 					p1.y++;
 					p1.between = -30;

@@ -7,6 +7,7 @@ public class Tile
 	public String name;
 	public int cornerY = 0;
 	public int cornerX = 0;
+	double chn;
 	public boolean walkable;
 	public String interact = null;
 	public boolean interactable = false;
@@ -16,10 +17,7 @@ public class Tile
 	public Tile(String x, boolean w)
 	{
 		properties = new boolean[5];
-		walkable = w;
-		properties[0] = walkable;
-		
-		name = x;
+		properties[0] = w;
 		try
 		{
 			//System.out.println(x);
