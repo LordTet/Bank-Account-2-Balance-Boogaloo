@@ -8,7 +8,7 @@ public class Map
 	private LocalMap wrap;
 	
 	//Coordinate Data, saves entry/exit point for the map.
-	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load
+	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load. Null means no teleport.
 	public int[] top = new int[3];
 	public int[] bottom = new int[3];
 	public int[] left = new int[3];
@@ -24,7 +24,7 @@ public class Map
 	}
 	
 	
-	public void loadMap(int mapnum)
+	public boolean loadMap(int mapnum)
 	{
 		tiles = new Tile[20][20];
 		File stage = new File("src/maps/" + mapnum + ".txt");
@@ -35,7 +35,7 @@ public class Map
 		} 
 		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			return false;
 		}
 		
 		wrap.introText = x.nextLine();
@@ -131,6 +131,7 @@ public class Map
 		}
 		
 		x.close();
+		return true;
 	}
 	
 	

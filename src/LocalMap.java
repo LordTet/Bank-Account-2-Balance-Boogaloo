@@ -8,11 +8,12 @@ import java.util.Scanner;
 import java.util.Set;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class LocalMap extends BasicGameState
 {
 
-	Map[] maps;
+	ArrayList<Map> maps;
 	
 	
 	Map currentMap;
@@ -32,53 +33,53 @@ public class LocalMap extends BasicGameState
 		
 		//read the amount of files in folder of maps, create array of maps
 		
-		//TODO: try moving the try.catch
-		maps = new Map[1];
+		//TODO: make maps an array of all maps in game
+		maps = new ArrayList<Map>();
 		try
 		{	
-			Map[] tempMaps = new Map[1];
 			int g = 0;
 			while(true)
 			{
 				Map x = new Map(this);
-				x.loadMap(g);
 				
-				tempMaps = new Map[maps.length+1];
-				System.arraycopy(maps, 0, tempMaps, 0, maps.length);
+				if(!x.loadMap(g))
+				{
+					break;
+				}
 				
-				tempMaps[tempMaps.length-1] = x;
-				
-				maps = tempMaps;
+				maps.add(x);
 				
 				g++;
+				System.out.println(g);
 			}
 		}
 		catch(Exception e)
 		{
 			System.out.println(e);
 		}
+		changeMap(1);
 
-		System.out.println(maps);
 		
 	}
 	
+	//Changes the map to the filenumber denoted by id
 	public void changeMap(int id)
 	{
-		currentMap = maps[id];
+		System.out.println(maps);
+		currentMap = maps.get(id);
 		currentMap.loadMap(id);
 	}
+	
+	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
 		int xloc = 100;
 		int yloc = 0;
 		
-		//tiles[0][1].sprite.draw(0,0);
-		
 		for(Tile[] x : currentMap.tiles)
 		{
 			for(Tile y: x)
 			{
-				//System.out.println(y.name);
 				y.sprite.draw(xloc,yloc);
 				y.cornerX = xloc;
 				y.cornerY = yloc;
