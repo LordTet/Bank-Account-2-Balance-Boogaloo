@@ -4,15 +4,27 @@ import java.util.Scanner;
 
 public class Map
 {
-	Tile[][] tiles;
-	LocalMap wrap;
+	public Tile[][] tiles;
+	private LocalMap wrap;
+	
+	//Coordinate Data, saves entry/exit point for the map.
+	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load
+	public int[] top = new int[3];
+	public int[] bottom = new int[3];
+	public int[] left = new int[3];
+	public int[] right = new int[3];
+	
+	
+	
+	
+	
 	public Map(LocalMap g)
 	{
 		wrap = g;
 	}
 	
 	
-	public void changeMap(int mapnum)
+	public void loadMap(int mapnum)
 	{
 		tiles = new Tile[20][20];
 		File stage = new File("src/maps/" + mapnum + ".txt");

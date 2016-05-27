@@ -25,19 +25,47 @@ public class LocalMap extends BasicGameState
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
+		//Store the gamecontainer for use and create the player object
 		gc = arg0;
 		p1 = new Player(0,9,18);
-		//read the amount of files in folder of maps, create array of maps.
 		
-		changeMap(0);
+		
+		//read the amount of files in folder of maps, create array of maps
+		
+		//TODO: try moving the try.catch
+		maps = new Map[1];
+		try
+		{	
+			Map[] tempMaps = new Map[1];
+			int g = 0;
+			while(true)
+			{
+				Map x = new Map(this);
+				x.loadMap(g);
+				
+				tempMaps = new Map[maps.length+1];
+				System.arraycopy(maps, 0, tempMaps, 0, maps.length);
+				
+				tempMaps[tempMaps.length-1] = x;
+				
+				maps = tempMaps;
+				
+				g++;
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 
-		
+		System.out.println(maps);
 		
 	}
 	
 	public void changeMap(int id)
 	{
 		currentMap = maps[id];
+		currentMap.loadMap(id);
 	}
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
@@ -46,7 +74,7 @@ public class LocalMap extends BasicGameState
 		
 		//tiles[0][1].sprite.draw(0,0);
 		
-		for(Tile[] x : tiles)
+		for(Tile[] x : currentMap.tiles)
 		{
 			for(Tile y: x)
 			{
@@ -62,26 +90,26 @@ public class LocalMap extends BasicGameState
 		
 		if(!p1.moving)
 		{
-			p1.draw(tiles[p1.x][p1.y]);
+			p1.draw(currentMap.tiles[p1.x][p1.y]);
 		}
 		else
 		{
 			
 			if(p1.direction == 3)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX-(float)p1.between , tiles[p1.x][p1.y].cornerY);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX-(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
 			}
 			else if(p1.direction == 1)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX+(float)p1.between , tiles[p1.x][p1.y].cornerY);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX+(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
 			}
 			else if(p1.direction == 2)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY+(float)p1.between);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY+(float)p1.between);
 			}
 			else if(p1.direction == 0)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
 			p1.between+=1.5;
@@ -101,16 +129,16 @@ public class LocalMap extends BasicGameState
 			{
 				case 0:
 					
-					interacted = tiles[p1.x-1][p1.y];
+					interacted = currentMap.tiles[p1.x-1][p1.y];
 					break;
 				case 1:
-					interacted = tiles[p1.x][p1.y+1];
+					interacted = currentMap.tiles[p1.x][p1.y+1];
 					break;
 				case 2:
-					interacted = tiles[p1.x+1][p1.y];
+					interacted = currentMap.tiles[p1.x+1][p1.y];
 					break;
 				case 3:
-					interacted = tiles[p1.x][p1.y-1];
+					interacted = currentMap.tiles[p1.x][p1.y-1];
 					break;
 			}
 			String dialogue = interacted.interact;
@@ -167,7 +195,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
-				if(tiles[p1.x-1][p1.y].walkable)
+				if(currentMap.tiles[p1.x-1][p1.y].walkable)
 				{
 					p1.x--;
 					p1.between = -30;
@@ -182,7 +210,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
-				if(tiles[p1.x+1][p1.y].walkable)
+				if(currentMap.tiles[p1.x+1][p1.y].walkable)
 				{
 					p1.x++;
 					p1.between = -30;
@@ -195,7 +223,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
-				if(tiles[p1.x][p1.y-1].walkable)
+				if(currentMap.tiles[p1.x][p1.y-1].walkable)
 				{
 					p1.moving = true;
 					p1.between = -30;
@@ -208,7 +236,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
-				if(tiles[p1.x][p1.y+1].walkable)
+				if(currentMap.tiles[p1.x][p1.y+1].walkable)
 				{
 					p1.y++;
 					p1.between = -30;
