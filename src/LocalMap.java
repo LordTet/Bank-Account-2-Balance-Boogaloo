@@ -1,11 +1,14 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.Image;
 import java.util.Scanner;
 import java.util.Set;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ public class LocalMap extends BasicGameState
 
 	ArrayList<Map> maps;
 	
+	TrueTypeFont crux;
 	
 	Map currentMap;
 	GameContainer gc;
@@ -29,11 +33,10 @@ public class LocalMap extends BasicGameState
 		//Store the gamecontainer for use and create the player object
 		gc = arg0;
 		p1 = new Player(0,9,18);
-		
-		
+		//crux = new Font("Coder's Crux", Font.PLAIN,24);
+		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
 		//read the amount of files in folder of maps, create array of maps
 		
-		//TODO: make maps an array of all maps in game
 		maps = new ArrayList<Map>();
 		try
 		{	
@@ -57,8 +60,12 @@ public class LocalMap extends BasicGameState
 		{
 			System.out.println(e);
 		}
-		changeMap(1);
+		changeMap(0);
 
+		if(introText.equals(""))
+		{
+			intro = false;
+		}
 		
 	}
 	
@@ -73,6 +80,9 @@ public class LocalMap extends BasicGameState
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
+		
+		arg2.setFont(crux);
+		
 		int xloc = 100;
 		int yloc = 0;
 		
@@ -178,7 +188,7 @@ public class LocalMap extends BasicGameState
 		 * Left:203
 		 * Right:205
 		 */
-		//TODO: Interactable objects.
+
 		
 		if(key == 44)
 		{
@@ -255,6 +265,12 @@ public class LocalMap extends BasicGameState
 	public int getID()
 	{
 		return 1;
+	}
+	
+	
+	public void showDialogue(String dia)
+	{
+		
 	}
 	
 }
