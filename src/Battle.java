@@ -53,24 +53,37 @@ public class Battle extends BasicGameState
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
+		//Buttons are 160 x 60 and are spaced 50 (x) apart
 		inp = gc.getInput();
 		//if the mouse is at the fight button and pressed, fight
 		if ((inp.getAbsoluteMouseX() > 99 && inp.getAbsoluteMouseX() < 261) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
 			ply.attack(ene);
+			isPlayerTurn = false;
+			if(ene.HP <= 0)
+			{
+				ply.exp += ene.exp;
+				//change state
+			}
 		}
-		/*else if (mouse is at item button, is pressed, is player turn)
+		/*else if ((inp.getAbsoluteMouseX() > 309 && inp.getAbsoluteMouseX() < 471) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
 			//playerBattle.useItem();
 		}
-		else if (mouse is at flee button, is pressed, is player turn)
+		*/
+		else if ((inp.getAbsoluteMouseX() > 519 && inp.getAbsoluteMouseX() < 681) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
-			//playerBattle.flee();
+			if(ply.flee(ene))
+			{
+				//change state
+			}
 		}
-		else if (is not player turn)
+		/*else if (is not player turn)
 		{
-			enemy.attack();
+			enemy.attack(ply);
 		}
+		
+		
 		*/
 		
 	}

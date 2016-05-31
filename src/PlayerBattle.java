@@ -31,12 +31,13 @@ public class PlayerBattle
 		}
 	}
 	
-	public void attack(Enemy other)
+	public int attack(Enemy other)
 	{
 		
 		int plus = generator.nextInt(2);
 		int damage = (atk + plus) - other.def;
 		other.HP -= damage;
+		return damage;
 	}
 	
 	/*public void useItem(Item it)
