@@ -15,7 +15,15 @@ public class Battle extends BasicGameState
 	StateBasedGame game;
 	Image player;
 	Image opponent;
+	Image fight;
+	Image fight1;
+	Image item;
+	Image item1;
+	Image escape;
+	Image escape1;
 	Input inp;
+	PlayerBattle ply;
+	Enemy ene;
 	boolean isPlayerTurn;
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
@@ -23,24 +31,35 @@ public class Battle extends BasicGameState
 		gc = arg0;
 		game = arg1;
 		isPlayerTurn = true;
+		fight = new Image("src/txtr/fight.jpg");
+		fight1 = new Image("src/txtr/fightactive.png");
+		item = new Image("src/txtr/item.jpg");
+		item1 = new Image("src/txtr/itemactive.png");
+		escape = new Image("src/txtr/escape.jpg");
+		escape1 = new Image("src/txtr/escapeactive.png");
+		ply = new PlayerBattle();
+		//ene = new Enemy();
 	}
 
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
 		arg2.drawRect(50, 400, 700, 150);
 		//TODO: Fight, Item, Flee buttons.
+		fight.draw(100, 400);
+		item.draw(300, 400);
+		escape.draw(500, 400);
 		
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
 		inp = gc.getInput();
-		/*if the mouse is at the fight button and pressed, fight
-		if (inp.getAbsoluteMouseX() == (fight location) && inp.isMousePressed(0) && isPlayerTurn)
+		//if the mouse is at the fight button and pressed, fight
+		if ((inp.getAbsoluteMouseX() > 99 && inp.getAbsoluteMouseX() < 261) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
-			//playerBattle.attack()
+			ply.attack(ene);
 		}
-		else if (mouse is at item button, is pressed, is player turn)
+		/*else if (mouse is at item button, is pressed, is player turn)
 		{
 			//playerBattle.useItem();
 		}
@@ -58,11 +77,7 @@ public class Battle extends BasicGameState
 
 	public int getID()
 	{
-<<<<<<< HEAD
 		return 2;
-=======
-		return 3;
->>>>>>> master
 	}
 	
 }

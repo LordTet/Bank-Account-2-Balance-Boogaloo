@@ -155,12 +155,12 @@ public class LocalMap extends BasicGameState
 		
 		
 	}
-<<<<<<< HEAD
+//<<<<<<< HEAD
     
 	
 	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
-=======
->>>>>>> origin/master
+//=======
+//>>>>>>> origin/master
 	
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
