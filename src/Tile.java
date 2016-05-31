@@ -11,10 +11,13 @@ public class Tile
 	public String interact = null;
 	public boolean interactable = false;
 	
+<<<<<<< HEAD
 
 	public boolean[] properties;
 	
 
+=======
+>>>>>>> Jake
 	public Tile(String x, boolean w, String y)
 	{
 		properties = new boolean[5];
@@ -22,7 +25,10 @@ public class Tile
 		
 		name = x;
 		interact = y;
+<<<<<<< HEAD
 
+=======
+>>>>>>> Jake
 		try
 		{
 			//System.out.println(x);
@@ -32,6 +38,11 @@ public class Tile
 		{
 			System.out.println("Image " + name + " not found!");
 		}
+	}
+	
+	public String toString()
+	{
+		return name;
 	}
 	
 

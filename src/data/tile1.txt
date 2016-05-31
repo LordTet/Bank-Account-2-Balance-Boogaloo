@@ -1,3 +1,7 @@
 src/txtr/1.png
 true
+<<<<<<< HEAD
 null
+=======
+null ~
+>>>>>>> Jake

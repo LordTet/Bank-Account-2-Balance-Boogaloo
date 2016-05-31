@@ -45,10 +45,13 @@ public class Battle extends BasicGameState
 	{
 		arg2.drawRect(50, 400, 700, 150);
 		//TODO: Fight, Item, Flee buttons.
+<<<<<<< HEAD
 		fight.draw(100, 400);
 		item.draw(300, 400);
 		escape.draw(500, 400);
 		
+=======
+>>>>>>> Jake
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
@@ -90,7 +93,11 @@ public class Battle extends BasicGameState
 
 	public int getID()
 	{
+<<<<<<< HEAD
 		return 2;
+=======
+		return 3;
+>>>>>>> Jake
 	}
 	
 }

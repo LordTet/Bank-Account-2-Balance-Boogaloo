@@ -1,3 +1,7 @@
 src/txtr/2.png
 false
+<<<<<<< HEAD
 This tile is different from the rest... -
+=======
+This tile is different from the rest... ~
+>>>>>>> Jake

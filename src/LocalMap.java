@@ -2,22 +2,31 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.Image;
 
 import java.util.Scanner;
+import java.util.Set;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 
 public class LocalMap extends BasicGameState
 {
+
+	ArrayList<Map> maps;
 	
-	Tile[][] tiles;
-	//boolean moving;
+	TrueTypeFont crux;
+	
+	Map currentMap;
 	GameContainer gc;
 	boolean interacting = true;
+<<<<<<< HEAD
 	String introText = null;
 	boolean intro = true;
 
@@ -161,19 +170,75 @@ public class LocalMap extends BasicGameState
 	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
 //=======
 //>>>>>>> origin/master
+=======
+	public String introText = null;
+	public boolean intro = true;
+
+	Player p1;
 	
+	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
+	{
+		//Store the gamecontainer for use and create the player object
+		gc = arg0;
+		p1 = new Player(0,9,18);
+		//crux = new Font("Coder's Crux", Font.PLAIN,24);
+		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
+		//read the amount of files in folder of maps, create array of maps
+		
+		maps = new ArrayList<Map>();
+		try
+		{	
+			int g = 0;
+			while(true)
+			{
+				Map x = new Map(this);
+				
+				if(!x.loadMap(g))
+				{
+					break;
+				}
+				
+				maps.add(x);
+				
+				g++;
+				System.out.println(g);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		changeMap(0);
+
+		if(introText.equals(""))
+		{
+			intro = false;
+		}
+		
+	}
+	
+	//Changes the map to the filenumber denoted by id
+	public void changeMap(int id)
+	{
+		System.out.println(maps);
+		currentMap = maps.get(id);
+		currentMap.loadMap(id);
+	}
+>>>>>>> Jake
+	
+	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
+		
+		arg2.setFont(crux);
+		
 		int xloc = 100;
 		int yloc = 0;
 		
-		//tiles[0][1].sprite.draw(0,0);
-		
-		for(Tile[] x : tiles)
+		for(Tile[] x : currentMap.tiles)
 		{
 			for(Tile y: x)
 			{
-				//System.out.println(y.name);
 				y.sprite.draw(xloc,yloc);
 				y.cornerX = xloc;
 				y.cornerY = yloc;
@@ -185,26 +250,26 @@ public class LocalMap extends BasicGameState
 		
 		if(!p1.moving)
 		{
-			p1.draw(tiles[p1.x][p1.y]);
+			p1.draw(currentMap.tiles[p1.x][p1.y]);
 		}
 		else
 		{
 			
 			if(p1.direction == 3)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX-(float)p1.between , tiles[p1.x][p1.y].cornerY);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX-(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
 			}
 			else if(p1.direction == 1)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX+(float)p1.between , tiles[p1.x][p1.y].cornerY);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX+(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
 			}
 			else if(p1.direction == 2)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY+(float)p1.between);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY+(float)p1.between);
 			}
 			else if(p1.direction == 0)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
 			p1.between+=1.5;
@@ -224,20 +289,24 @@ public class LocalMap extends BasicGameState
 			{
 				case 0:
 					
-					interacted = tiles[p1.x-1][p1.y];
+					interacted = currentMap.tiles[p1.x-1][p1.y];
 					break;
 				case 1:
-					interacted = tiles[p1.x][p1.y+1];
+					interacted = currentMap.tiles[p1.x][p1.y+1];
 					break;
 				case 2:
-					interacted = tiles[p1.x+1][p1.y];
+					interacted = currentMap.tiles[p1.x+1][p1.y];
 					break;
 				case 3:
-					interacted = tiles[p1.x][p1.y-1];
+					interacted = currentMap.tiles[p1.x][p1.y-1];
 					break;
 			}
 			String dialogue = interacted.interact;
+<<<<<<< HEAD
 			System.out.println(dialogue);
+=======
+
+>>>>>>> Jake
 			if(!dialogue.equals("null"))
 			{
 				arg2.drawString(dialogue, 230, 10);
@@ -272,7 +341,7 @@ public class LocalMap extends BasicGameState
 		 * Left:203
 		 * Right:205
 		 */
-		//TODO: Interactable objects.
+
 		
 		if(key == 44)
 		{
@@ -290,7 +359,11 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
+<<<<<<< HEAD
 				if(tiles[p1.x-1][p1.y].properties[0])
+=======
+				if(currentMap.tiles[p1.x-1][p1.y].walkable)
+>>>>>>> Jake
 				{
 					p1.x--;
 					p1.between = -30;
@@ -305,7 +378,11 @@ public class LocalMap extends BasicGameState
 				
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
+<<<<<<< HEAD
 				if(tiles[p1.x+1][p1.y].properties[0])
+=======
+				if(currentMap.tiles[p1.x+1][p1.y].walkable)
+>>>>>>> Jake
 				{
 					p1.x++;
 					p1.between = -30;
@@ -318,7 +395,11 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
+<<<<<<< HEAD
 				if(tiles[p1.x][p1.y-1].properties[0])
+=======
+				if(currentMap.tiles[p1.x][p1.y-1].walkable)
+>>>>>>> Jake
 				{
 					p1.moving = true;
 					p1.between = -30;
@@ -331,7 +412,11 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
+<<<<<<< HEAD
 				if(tiles[p1.x][p1.y+1].properties[0])
+=======
+				if(currentMap.tiles[p1.x][p1.y+1].walkable)
+>>>>>>> Jake
 				{
 					p1.y++;
 					p1.between = -30;
@@ -349,6 +434,12 @@ public class LocalMap extends BasicGameState
 	public int getID()
 	{
 		return 1;
+	}
+	
+	
+	public void showDialogue(String dia)
+	{
+		
 	}
 	
 }
