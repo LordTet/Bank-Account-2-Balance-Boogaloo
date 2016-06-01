@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Test extends StateBasedGame
 {
 
+	Battle x = new Battle();
     public static void main(String[] args)
     {
     	System.out.println("lmao");
@@ -29,8 +30,8 @@ public class Test extends StateBasedGame
     public void initStatesList(GameContainer container) throws SlickException
     {
         addState(new MainMenu());
-        addState(new LocalMap());
-       	addState(new Battle());
+       	addState(x);
+        addState(new LocalMap(x));
     }
  
 }

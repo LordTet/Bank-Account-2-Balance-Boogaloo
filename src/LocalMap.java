@@ -25,9 +25,15 @@ public class LocalMap extends BasicGameState
 	boolean interacting = true;
 	public String introText = null;
 	public boolean intro = true;
+	Battle battleState;
 
 	Player p1;
 	
+	public LocalMap(Battle x)
+	{
+		super();
+		x = battleState;
+	}
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		//Store the gamecontainer for use and create the player object
@@ -156,6 +162,8 @@ public class LocalMap extends BasicGameState
 
 			if(!dialogue.equals("null"))
 			{
+				//TEST MORE
+				arg2.drawRect(200, 5, dialogue.length()*5, 50);
 				arg2.drawString(dialogue, 230, 10);
 			}
 			else if(dialogue.equals("null") && !intro)
