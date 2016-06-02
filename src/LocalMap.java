@@ -16,13 +16,13 @@ import java.util.ArrayList;
 public class LocalMap extends BasicGameState
 {
 
-	ArrayList<Map> maps;
+	private ArrayList<Map> maps;
 	
-	TrueTypeFont crux;
+	private TrueTypeFont crux;
 	
-	Map currentMap;
-	GameContainer gc;
-	boolean interacting = true;
+	private Map currentMap;
+	private GameContainer gc;
+	public boolean interacting = true;
 	public String introText = null;
 	public boolean intro = true;
 	Battle battleState;

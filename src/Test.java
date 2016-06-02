@@ -30,7 +30,7 @@ public class Test extends StateBasedGame
     {
     	Battle x = new Battle();
         addState(new MainMenu());
-       	addState(x);
+       	//addState(x);
         addState(new LocalMap(x));
     }
  
