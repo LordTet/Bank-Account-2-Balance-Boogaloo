@@ -26,151 +26,25 @@ public class LocalMap extends BasicGameState
 	Map currentMap;
 	GameContainer gc;
 	boolean interacting = true;
-<<<<<<< HEAD
-	String introText = null;
-	boolean intro = true;
+
 
 	
 	//temporary static player positions
 
-	Player p1;
+
 	
 	//Return 2d array of the correct size for tile.
 	
-	public void changeMap(int mapnum)
-	{
-		tiles = new Tile[20][20];
-		File stage = new File("src/maps/" + mapnum + ".txt");
-		Scanner x = null;
-		try 
-		{
-			x = new Scanner(stage);
-		} 
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		
-		introText = x.nextLine();
-		intro = true;
-		interacting = true;
-		
-		int row = 0;
-		int col = 0;
-		int maxCol = 0;
-		while(x.hasNext())
-		{
-			col++;
-			if(x.next().equals("k"))
-			{
-				row++;
-				col--;
-				if(col > maxCol)
-				{
-					maxCol = col;
-				}
-				col = 0;
-			}
-		}
-		System.out.println("row: " + row + " col: " + maxCol);
-		
-		tiles = new Tile[row][maxCol];
-		
-		
-		try
-		{
-			x.close();
-			x = new Scanner(stage);
-			x.nextLine();
-		}
-		catch(Exception e)
-		{
-			//System.out.println(e);
-		}
-		
-		
-		row = 0;
-		col = 0;
-		
-		String current = "k";
-		while(!current.equals("j"))
-		{
-			current = x.next();
-			
-			//TODO: make map generation draw nothing on null.
-			if(current.equals("x"))
-			{
-				tiles[row][col] = null;
-			}
-			else if(!current.equals("k") && !current.equals("j"))
-			{
-				//System.out.println(current);
-				String path = "src/txtr/";
-				path += Integer.parseInt(current) + ".png";
-				//tiles[row][col] = new Tile(path,true);
-				
-				
-				//Generalize further, implement to file.
-				/*if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
-				{
-					tiles[row][col].properties[0] = false;
-					tiles[row][col].interactable = true;
-					if(Integer.parseInt(current) == 0)
-					{
-						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
-					}
-				}*/
-				
-				
-				Scanner tileScanner = null;
-				try
-				{
-					tileScanner = new Scanner(new File("src/data/tile" + current + ".txt"));
-				}
-				catch(Exception e)
-				{
-					System.out.println(e);
-				}
-				/*String spritePath = tileScanner.next();
-				String walk = tileScanner.nextBoolean();
-				String interact = "";
-				String current
-				while()
-				*/
-				tiles[row][col] = new Tile(tileScanner.next(), tileScanner.nextBoolean(), tileScanner.next());
-				//System.out.println("Tile: " + tiles[row][col].name + " " + tiles[row][col].interact);
-				col++;
-			}
-			else if(current.equals("j"))
-			{
-				row--;
-			}
-			else
-			{
-				col = 0;
-				row++;
-			}
-		}
-		
-		x.close();
-	}
 	
-	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
-	{
-		gc = arg0;
-		p1 = new Player(0,9,18);
-		changeMap(0);
-		
-		
-		
-	}
+	
+	
 //<<<<<<< HEAD
     
 	
 	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
 //=======
 //>>>>>>> origin/master
-=======
+
 	public String introText = null;
 	public boolean intro = true;
 
@@ -206,7 +80,7 @@ public class LocalMap extends BasicGameState
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			System.out.println("OH NO");
 		}
 		changeMap(0);
 
@@ -224,7 +98,7 @@ public class LocalMap extends BasicGameState
 		currentMap = maps.get(id);
 		currentMap.loadMap(id);
 	}
->>>>>>> Jake
+
 	
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
@@ -302,11 +176,9 @@ public class LocalMap extends BasicGameState
 					break;
 			}
 			String dialogue = interacted.interact;
-<<<<<<< HEAD
-			System.out.println(dialogue);
-=======
 
->>>>>>> Jake
+			System.out.println(dialogue);
+			
 			if(!dialogue.equals("null"))
 			{
 				arg2.drawString(dialogue, 230, 10);
@@ -359,11 +231,9 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
-<<<<<<< HEAD
-				if(tiles[p1.x-1][p1.y].properties[0])
-=======
-				if(currentMap.tiles[p1.x-1][p1.y].walkable)
->>>>>>> Jake
+
+				if(currentMap.tiles[p1.x-1][p1.y].properties[0])
+
 				{
 					p1.x--;
 					p1.between = -30;
@@ -378,11 +248,9 @@ public class LocalMap extends BasicGameState
 				
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
-<<<<<<< HEAD
-				if(tiles[p1.x+1][p1.y].properties[0])
-=======
-				if(currentMap.tiles[p1.x+1][p1.y].walkable)
->>>>>>> Jake
+
+				if(currentMap.tiles[p1.x+1][p1.y].properties[0])
+
 				{
 					p1.x++;
 					p1.between = -30;
@@ -395,11 +263,9 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
-<<<<<<< HEAD
-				if(tiles[p1.x][p1.y-1].properties[0])
-=======
-				if(currentMap.tiles[p1.x][p1.y-1].walkable)
->>>>>>> Jake
+
+				if(currentMap.tiles[p1.x][p1.y-1].properties[0])
+
 				{
 					p1.moving = true;
 					p1.between = -30;
@@ -412,11 +278,9 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
-<<<<<<< HEAD
-				if(tiles[p1.x][p1.y+1].properties[0])
-=======
-				if(currentMap.tiles[p1.x][p1.y+1].walkable)
->>>>>>> Jake
+
+				if(currentMap.tiles[p1.x][p1.y+1].properties[0])
+
 				{
 					p1.y++;
 					p1.between = -30;

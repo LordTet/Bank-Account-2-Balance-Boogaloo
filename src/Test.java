@@ -14,6 +14,7 @@ public class Test extends StateBasedGame
         	AppGameContainer container = new AppGameContainer(new Test());
         	container.setTargetFrameRate(60);
             container.setDisplayMode(800,600,false);
+            container.setTargetFrameRate(60);
             container.start();
         } 
         catch (SlickException e)
@@ -30,13 +31,7 @@ public class Test extends StateBasedGame
     {
         addState(new MainMenu());
         addState(new LocalMap());
-<<<<<<< HEAD
-        addState(new Battle());
        	addState(new Battle());
-
-=======
-       	addState(new Battle());
->>>>>>> Jake
     }
  
 }

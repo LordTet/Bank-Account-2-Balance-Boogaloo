@@ -38,20 +38,18 @@ public class Battle extends BasicGameState
 		escape = new Image("src/txtr/escape.jpg");
 		escape1 = new Image("src/txtr/escapeactive.png");
 		ply = new PlayerBattle();
-		//ene = new Enemy();
+		ene = new Enemy("src/data/battle_enemy.txt");
 	}
 
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
 		arg2.drawRect(50, 400, 700, 150);
 		//TODO: Fight, Item, Flee buttons.
-<<<<<<< HEAD
 		fight.draw(100, 400);
 		item.draw(300, 400);
 		escape.draw(500, 400);
 		
-=======
->>>>>>> Jake
+
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
@@ -62,6 +60,7 @@ public class Battle extends BasicGameState
 		if ((inp.getAbsoluteMouseX() > 99 && inp.getAbsoluteMouseX() < 261) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
 			ply.attack(ene);
+			//drawString to show damage
 			isPlayerTurn = false;
 			if(ene.HP <= 0)
 			{
@@ -69,21 +68,26 @@ public class Battle extends BasicGameState
 				//change state
 			}
 		}
-		/*else if ((inp.getAbsoluteMouseX() > 309 && inp.getAbsoluteMouseX() < 471) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
+		/*else if ((inp.getAbsoluteMouseX() > 299 && inp.getAbsoluteMouseX() < 461) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
-			//playerBattle.useItem();
+			draw different item menu
+			when item is clicked
+			playerBattle.useItem(the input);
+			redraw the normal menu
+			isPlayerTurn = false;
 		}
 		*/
-		else if ((inp.getAbsoluteMouseX() > 519 && inp.getAbsoluteMouseX() < 681) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
+		else if ((inp.getAbsoluteMouseX() > 499 && inp.getAbsoluteMouseX() < 661) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 399) && inp.isMousePressed(0) && isPlayerTurn)
 		{
 			if(ply.flee(ene))
 			{
 				//change state
 			}
+			isPlayerTurn = false;
 		}
-		/*else if (is not player turn)
+		else if (!isPlayerTurn)
 		{
-			enemy.attack(ply);
+			ene.attack(ply);
 		}
 		
 		
@@ -93,11 +97,8 @@ public class Battle extends BasicGameState
 
 	public int getID()
 	{
-<<<<<<< HEAD
-		return 2;
-=======
 		return 3;
->>>>>>> Jake
+
 	}
 	
 }

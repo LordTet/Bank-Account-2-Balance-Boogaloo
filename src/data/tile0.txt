@@ -1,7 +1,4 @@
 src/txtr/0.png
 false
-<<<<<<< HEAD
-null
-=======
 null ~
->>>>>>> Jake
+
