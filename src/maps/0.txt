@@ -1,4 +1,4 @@
-Welcome to the game! Z to interact, and interact with\nthe green tile when you're ready to leave.
+ayy lmao
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 k
 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 k
 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 k
@@ -19,4 +19,10 @@ Welcome to the game! Z to interact, and interact with\nthe green tile when you'r
 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 k
 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 k
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 k
+<<<<<<< HEAD
 j
+=======
+j
+1 18 1
+end
+>>>>>>> origin/master

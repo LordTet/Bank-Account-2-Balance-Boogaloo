@@ -28,9 +28,16 @@ public class Test extends StateBasedGame
  
     public void initStatesList(GameContainer container) throws SlickException
     {
+<<<<<<< HEAD
         addState(new MainMenu());
         addState(new LocalMap());
        	addState(new Battle());
+=======
+    	Battle x = new Battle();
+        addState(new MainMenu());
+       	addState(x);
+        addState(new LocalMap(x));
+>>>>>>> origin/master
     }
  
 }

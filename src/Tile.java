@@ -13,9 +13,13 @@ public class Tile
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public boolean[] properties;
 	
 	public Tile(String x, boolean w)
+=======
+	public Tile(String x, boolean w, String y)
+>>>>>>> origin/master
 =======
 	public Tile(String x, boolean w, String y)
 >>>>>>> origin/master
@@ -38,6 +42,11 @@ public class Tile
 		{
 			System.out.println("Image " + name + " not found!");
 		}
+	}
+	
+	public String toString()
+	{
+		return name;
 	}
 	
 
