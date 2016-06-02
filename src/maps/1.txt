@@ -21,3 +21,4 @@ Wow, random teleporters.
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 k
 j
 end
+18 1 0

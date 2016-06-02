@@ -64,7 +64,7 @@ public class LocalMap extends BasicGameState
 		{
 			System.out.println(e);
 		}
-		changeMap(0);
+		changeMap(0, -1);
 
 		if(introText.equals(""))
 		{
@@ -74,10 +74,18 @@ public class LocalMap extends BasicGameState
 	}
 	
 	//Changes the map to the filenumber denoted by id
-	public void changeMap(int id)
+	public void changeMap(int id, int oldID)
 	{
-		currentMap = maps.get(id);
-		currentMap.loadMap(id);
+		if(oldID == -1)
+		{
+			currentMap = maps.get(id);
+			currentMap.loadMap(id);
+		}
+		else
+		{
+			currentMap = maps.get(id);
+			currentMap.loadMap(id, oldID,p1);
+		}
 	}
 	
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
@@ -199,7 +207,7 @@ public class LocalMap extends BasicGameState
 		{
 			if(p1.x == x[0] && p1.y == x[1])
 			{
-				changeMap(x[2]);
+				changeMap(x[2],currentMap.mapID);
 			}
 		}
 	}
@@ -211,12 +219,6 @@ public class LocalMap extends BasicGameState
 			gc.exit();
 		}
 		System.out.println(key);
-		/*Up: 200
-		 *Down:208
-		 * Left:203
-		 * Right:205
-		 */
-
 		
 		if(key == 44)
 		{

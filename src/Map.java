@@ -8,6 +8,7 @@ public class Map
 {
 	public Tile[][] tiles;
 	private LocalMap wrap;
+	public int mapID;
 	
 	//Coordinate Data, saves entry/exit point for the map.
 	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load. Null means no teleport.
@@ -23,12 +24,13 @@ public class Map
 		doors = new HashSet<int[]>();
 	}
 	
-	
-	public boolean loadMap(int mapnum)
+	//loads map sans enterance nodes
+	public boolean loadMap(int mapNum)
 	{
+		mapID = mapNum;
 		doors = new HashSet<int[]>();
 		tiles = new Tile[20][20];
-		File stage = new File("src/maps/" + mapnum + ".txt");
+		File stage = new File("src/maps/" + mapNum + ".txt");
 		Scanner x = null;
 		try 
 		{
@@ -60,7 +62,7 @@ public class Map
 				col = 0;
 			}
 		}
-		System.out.println("MAP: " + mapnum);
+		System.out.println("MAP: " + mapNum);
 		
 		tiles = new Tile[row][maxCol];
 		
@@ -161,6 +163,44 @@ public class Map
 		return true;
 	}
 	
+	
+	//Loads the map, and places the player in the proper location as dictated by the map file
+	public boolean loadMap(int mapNum, int oldMapNum, Player p1)
+	{
+		Scanner x = null;
+		loadMap(mapNum);
+		File stage = new File("src/maps/" + mapNum + ".txt");
+		try
+		{
+			x = new Scanner(stage);
+		}
+		catch(FileNotFoundException e)
+		{
+			return false;
+		}
+		String current = x.next();
+		while(!current.equals("end"))
+		{
+			current = x.next();
+		}
+		if(x.hasNext())
+		{
+			int newX = Integer.parseInt(x.next());
+			int newY = Integer.parseInt(x.next());
+			int source = Integer.parseInt(x.next());
+			
+			if(oldMapNum == source)
+			{
+				p1.x = newX;
+				p1.y = newY;
+			}
+		}
+		
+		
+		
+		return true;
+		
+	}
 	
 	
 	
