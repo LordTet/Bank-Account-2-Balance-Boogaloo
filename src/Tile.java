@@ -12,9 +12,13 @@ public class Tile
 	public boolean interactable = false;
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public boolean[] properties;
 	
 	public Tile(String x, boolean w)
+=======
+	public Tile(String x, boolean w, String y)
+>>>>>>> origin/master
 =======
 	public Tile(String x, boolean w, String y)
 >>>>>>> origin/master
