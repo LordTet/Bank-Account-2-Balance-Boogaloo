@@ -1,27 +1,33 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.EmptyTransition;
+
+import java.io.File;
+
 import org.newdawn.slick.Color;
 public class MainMenu extends BasicGameState
 {
 	private StateBasedGame game;
 	private GameContainer contain;
+	Image title;
 	public void init(GameContainer container, StateBasedGame game) throws SlickException 
     {
         this.game = game;
         contain = container;
+        title = new Image("src/txtr/titleImage.png");
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
     {
-        g.setColor(Color.red);
-        g.drawString("A rediculously bad title screen for Proof of Concept Purposes!",100,50);
         g.setColor(Color.white);
-        g.drawString("1. Play game",100,150);
-        g.drawString("2. Exit",100,200);
+        g.scale(2, 2);
+        g.drawString("1. Play game",10 ,250);
+        g.drawString("2. Exit",300,250);
+        title.draw(0,0,(float).805);
 
     }
  

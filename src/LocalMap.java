@@ -1,169 +1,106 @@
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.Image;
 import java.util.Scanner;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class LocalMap extends BasicGameState
 {
+
+	ArrayList<Map> maps;
 	
-	Tile[][] tiles;
-	//boolean moving;
+	TrueTypeFont crux;
+	
+	Map currentMap;
 	GameContainer gc;
 	boolean interacting = true;
-	String introText = null;
-	boolean intro = true;
-	
-	//temporary static player positions
+	public String introText = null;
+	public boolean intro = true;
+	Battle battleState;
 
 	Player p1;
 	
-	//Return 2d array of the correct size for tile.
-	
-	public void changeMap(int mapnum)
+	public LocalMap(Battle x)
 	{
-		tiles = new Tile[20][20];
-		File stage = new File("src/maps/" + mapnum + ".txt");
-		Scanner x = null;
-		try 
-		{
-			x = new Scanner(stage);
-		} 
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		
-		introText = x.nextLine();
-		intro = true;
-		interacting = true;
-		
-		int row = 0;
-		int col = 0;
-		int maxCol = 0;
-		while(x.hasNext())
-		{
-			col++;
-			if(x.next().equals("k"))
-			{
-				row++;
-				col--;
-				if(col > maxCol)
-				{
-					maxCol = col;
-				}
-				col = 0;
-			}
-		}
-		System.out.println("row: " + row + " col: " + maxCol);
-		
-		tiles = new Tile[row][maxCol];
-		
-		
-		try
-		{
-			x.close();
-			x = new Scanner(stage);
-			x.nextLine();
-		}
-		catch(Exception e)
-		{
-			//System.out.println(e);
-		}
-		
-		
-		row = 0;
-		col = 0;
-		
-		String current = "k";
-		while(!current.equals("j"))
-		{
-			current = x.next();
-			
-			//TODO: make map generation draw nothing on null.
-			if(current.equals("x"))
-			{
-				tiles[row][col] = null;
-			}
-			else if(!current.equals("k") && !current.equals("j"))
-			{
-				//System.out.println(current);
-				String path = "src/txtr/";
-				path += Integer.parseInt(current) + ".png";
-				//tiles[row][col] = new Tile(path,true);
-				
-				
-				//Generalize further, implement to file.
-				/*if(Integer.parseInt(current) == 0 || Integer.parseInt(current) == 2 || Integer.parseInt(current) == 3)
-				{
-					tiles[row][col].walkable = false;
-					tiles[row][col].interactable = true;
-					if(Integer.parseInt(current) == 0)
-					{
-						tiles[row][col].interact = "You seem to be able to interact with this block...\nWhat a well thought out proof of concept!";
-					}
-				}*/
-				
-				
-				Scanner tileScanner = null;
-				try
-				{
-					tileScanner = new Scanner(new File("src/data/tile" + current + ".txt"));
-				}
-				catch(Exception e)
-				{
-					System.out.println(e);
-				}
-				/*String spritePath = tileScanner.next();
-				String walk = tileScanner.nextBoolean();
-				String interact = "";
-				String current
-				while()
-				*/
-				tiles[row][col] = new Tile(tileScanner.next(), tileScanner.nextBoolean(), tileScanner.next());
-				//System.out.println("Tile: " + tiles[row][col].name + " " + tiles[row][col].interact);
-				col++;
-			}
-			else if(current.equals("j"))
-			{
-				row--;
-			}
-			else
-			{
-				col = 0;
-				row++;
-			}
-		}
-		
-		x.close();
+		super();
+		x = battleState;
 	}
-	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		gc = arg0;
 		p1 = new Player(0,9,18);
-		changeMap(0);
-
+		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
+		//read the amount of files in folder of maps, create array of maps
 		
+		maps = new ArrayList<Map>();
+		try
+		{	
+			int g = 0;
+			while(true)
+			{
+				System.out.println("loading " + g);
+				Map x = new Map(this);
+				
+				if(!x.loadMap(g))
+				{
+					break;
+				}
+				
+				maps.add(x);
+				
+				g++;
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		changeMap(0, -1);
+
+		if(introText.equals(""))
+		{
+			intro = false;
+		}
 		
 	}
 	
+	//Changes the map to the filenumber denoted by id
+	public void changeMap(int id, int oldID)
+	{
+		if(oldID == -1)
+		{
+			currentMap = maps.get(id);
+			currentMap.loadMap(id);
+		}
+		else
+		{
+			currentMap = maps.get(id);
+			currentMap.loadMap(id, oldID,p1);
+		}
+	}
+	
+	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
+		
+		arg2.setFont(crux);
+		
 		int xloc = 100;
 		int yloc = 0;
 		
-		//tiles[0][1].sprite.draw(0,0);
-		
-		for(Tile[] x : tiles)
+		for(Tile[] x : currentMap.tiles)
 		{
 			for(Tile y: x)
 			{
-				//System.out.println(y.name);
 				y.sprite.draw(xloc,yloc);
 				y.cornerX = xloc;
 				y.cornerY = yloc;
@@ -175,26 +112,26 @@ public class LocalMap extends BasicGameState
 		
 		if(!p1.moving)
 		{
-			p1.draw(tiles[p1.x][p1.y]);
+			p1.draw(currentMap.tiles[p1.x][p1.y]);
 		}
 		else
 		{
 			
 			if(p1.direction == 3)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX-(float)p1.between , tiles[p1.x][p1.y].cornerY);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX-(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
 			}
 			else if(p1.direction == 1)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX+(float)p1.between , tiles[p1.x][p1.y].cornerY);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX+(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
 			}
 			else if(p1.direction == 2)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY+(float)p1.between);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY+(float)p1.between);
 			}
 			else if(p1.direction == 0)
 			{
-				p1.sprite.draw(tiles[p1.x][p1.y].cornerX, tiles[p1.x][p1.y].cornerY-(float)p1.between);
+				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
 			p1.between+=1.5;
@@ -214,23 +151,32 @@ public class LocalMap extends BasicGameState
 			{
 				case 0:
 					
-					interacted = tiles[p1.x-1][p1.y];
+					interacted = currentMap.tiles[p1.x-1][p1.y];
 					break;
 				case 1:
-					interacted = tiles[p1.x][p1.y+1];
+					interacted = currentMap.tiles[p1.x][p1.y+1];
 					break;
 				case 2:
-					interacted = tiles[p1.x+1][p1.y];
+					interacted = currentMap.tiles[p1.x+1][p1.y];
 					break;
 				case 3:
-					interacted = tiles[p1.x][p1.y-1];
+					interacted = currentMap.tiles[p1.x][p1.y-1];
 					break;
 			}
 			String dialogue = interacted.interact;
-			System.out.println(dialogue);
+
 			if(!dialogue.equals("null"))
 			{
+				//TEST MORE
+				/*
+				arg2.drawRect(199, 4, (dialogue.length()*10)+2, 52);
+				arg2.drawRect(200, 5, dialogue.length()*10, 50);
+				arg2.setColor(Color.black);
+				arg2.fillRect(201, 6, (dialogue.length()*10)-1, 49);
+				arg2.setColor(Color.white);
 				arg2.drawString(dialogue, 230, 10);
+				*/
+				drawTextBox(dialogue,arg2);
 			}
 			else if(dialogue.equals("null") && !intro)
 			{
@@ -240,14 +186,30 @@ public class LocalMap extends BasicGameState
 		}
 		else if(intro)
 		{
-			arg2.drawString(introText, 230, 10);
+			drawTextBox(introText, arg2);
 		}
 		
+	}
+	
+	public void drawTextBox(String text, Graphics g)
+	{
+		g.drawRect(199, 4, (text.length()*10)+2, 52);
+		g.drawRect(200, 5, text.length()*10, 50);
+		g.setColor(Color.black);
+		g.fillRect(201, 6, (text.length()*10)-1, 49);
+		g.setColor(Color.white);
+		g.drawString(text,203,23);
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
-		
+		for(int[] x : currentMap.doors)
+		{
+			if(p1.x == x[0] && p1.y == x[1])
+			{
+				changeMap(x[2],currentMap.mapID);
+			}
+		}
 	}
 	
 	public void keyPressed(int key, char c)
@@ -257,12 +219,6 @@ public class LocalMap extends BasicGameState
 			gc.exit();
 		}
 		System.out.println(key);
-		/*Up: 200
-		 *Down:208
-		 * Left:203
-		 * Right:205
-		 */
-		//TODO: Interactable objects.
 		
 		if(key == 44)
 		{
@@ -280,7 +236,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
-				if(tiles[p1.x-1][p1.y].walkable)
+				if(currentMap.tiles[p1.x-1][p1.y].walkable)
 				{
 					p1.x--;
 					p1.between = -30;
@@ -295,7 +251,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
-				if(tiles[p1.x+1][p1.y].walkable)
+				if(currentMap.tiles[p1.x+1][p1.y].walkable)
 				{
 					p1.x++;
 					p1.between = -30;
@@ -308,7 +264,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
-				if(tiles[p1.x][p1.y-1].walkable)
+				if(currentMap.tiles[p1.x][p1.y-1].walkable)
 				{
 					p1.moving = true;
 					p1.between = -30;
@@ -321,7 +277,7 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
-				if(tiles[p1.x][p1.y+1].walkable)
+				if(currentMap.tiles[p1.x][p1.y+1].walkable)
 				{
 					p1.y++;
 					p1.between = -30;
@@ -339,6 +295,12 @@ public class LocalMap extends BasicGameState
 	public int getID()
 	{
 		return 1;
+	}
+	
+	
+	public void showDialogue(String dia)
+	{
+		
 	}
 	
 }
