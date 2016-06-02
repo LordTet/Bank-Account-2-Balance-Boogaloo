@@ -1,3 +1,4 @@
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -7,7 +8,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.Image;
 import java.util.Scanner;
-import java.util.Set;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,10 +36,8 @@ public class LocalMap extends BasicGameState
 	}
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
-		//Store the gamecontainer for use and create the player object
 		gc = arg0;
 		p1 = new Player(0,9,18);
-		//crux = new Font("Coder's Crux", Font.PLAIN,24);
 		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
 		//read the amount of files in folder of maps, create array of maps
 		
@@ -49,6 +47,7 @@ public class LocalMap extends BasicGameState
 			int g = 0;
 			while(true)
 			{
+				System.out.println("loading " + g);
 				Map x = new Map(this);
 				
 				if(!x.loadMap(g))
@@ -59,7 +58,6 @@ public class LocalMap extends BasicGameState
 				maps.add(x);
 				
 				g++;
-				System.out.println(g);
 			}
 		}
 		catch(Exception e)
@@ -78,7 +76,6 @@ public class LocalMap extends BasicGameState
 	//Changes the map to the filenumber denoted by id
 	public void changeMap(int id)
 	{
-		System.out.println(maps);
 		currentMap = maps.get(id);
 		currentMap.loadMap(id);
 	}
@@ -163,8 +160,15 @@ public class LocalMap extends BasicGameState
 			if(!dialogue.equals("null"))
 			{
 				//TEST MORE
-				arg2.drawRect(200, 5, dialogue.length()*5, 50);
+				/*
+				arg2.drawRect(199, 4, (dialogue.length()*10)+2, 52);
+				arg2.drawRect(200, 5, dialogue.length()*10, 50);
+				arg2.setColor(Color.black);
+				arg2.fillRect(201, 6, (dialogue.length()*10)-1, 49);
+				arg2.setColor(Color.white);
 				arg2.drawString(dialogue, 230, 10);
+				*/
+				drawTextBox(dialogue,arg2);
 			}
 			else if(dialogue.equals("null") && !intro)
 			{
@@ -174,14 +178,30 @@ public class LocalMap extends BasicGameState
 		}
 		else if(intro)
 		{
-			arg2.drawString(introText, 230, 10);
+			drawTextBox(introText, arg2);
 		}
 		
+	}
+	
+	public void drawTextBox(String text, Graphics g)
+	{
+		g.drawRect(199, 4, (text.length()*10)+2, 52);
+		g.drawRect(200, 5, text.length()*10, 50);
+		g.setColor(Color.black);
+		g.fillRect(201, 6, (text.length()*10)-1, 49);
+		g.setColor(Color.white);
+		g.drawString(text,203,23);
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
-		
+		for(int[] x : currentMap.doors)
+		{
+			if(p1.x == x[0] && p1.y == x[1])
+			{
+				changeMap(x[2]);
+			}
+		}
 	}
 	
 	public void keyPressed(int key, char c)

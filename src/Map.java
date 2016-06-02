@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Map
 {
@@ -9,11 +11,8 @@ public class Map
 	
 	//Coordinate Data, saves entry/exit point for the map.
 	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load. Null means no teleport.
-	public int[] top = new int[3];
-	public int[] bottom = new int[3];
-	public int[] left = new int[3];
-	public int[] right = new int[3];
-	
+
+	public Set<int[]> doors;
 	
 	
 	
@@ -21,11 +20,13 @@ public class Map
 	public Map(LocalMap g)
 	{
 		wrap = g;
+		doors = new HashSet<int[]>();
 	}
 	
 	
 	public boolean loadMap(int mapnum)
 	{
+		doors = new HashSet<int[]>();
 		tiles = new Tile[20][20];
 		File stage = new File("src/maps/" + mapnum + ".txt");
 		Scanner x = null;
@@ -59,7 +60,7 @@ public class Map
 				col = 0;
 			}
 		}
-		System.out.println("row: " + row + " col: " + maxCol);
+		System.out.println("MAP: " + mapnum);
 		
 		tiles = new Tile[row][maxCol];
 		
@@ -129,6 +130,32 @@ public class Map
 				row++;
 			}
 		}
+		
+		
+		int[] insert = new int[3];
+		String g = x.next();
+		int counter = 0;
+		while(!g.equals("end"))
+		{
+
+			insert[counter] = Integer.parseInt(g);
+			if(counter == 2)
+			{
+				doors.add(insert);
+				counter = -1;
+				insert = new int[3];
+			}
+			counter++;
+			g = x.next();
+
+		}
+		for(int[]y : doors)
+		{
+			System.out.println(y[0]);
+			System.out.println(y[1]);
+			System.out.println(y[2]);
+		}
+		
 		
 		x.close();
 		return true;
