@@ -66,7 +66,7 @@ public class LocalMap extends BasicGameState
 		}
 		changeMap(0, -1);
 
-		if(introText.equals(""))
+		if(introText.equals("null"))
 		{
 			intro = false;
 		}
