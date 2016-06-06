@@ -78,15 +78,7 @@ public class Battle extends BasicGameState
 		if ((inp.getAbsoluteMouseX() > 99 && inp.getAbsoluteMouseX() < 261) && (inp.getAbsoluteMouseY() > 449 && inp.getAbsoluteMouseY() < 511) && inp.isMousePressed(Input.MOUSE_LEFT_BUTTON) && isPlayerTurn)
 		{
 			int d = ply.attack(ene);
-			try
-			{
-				gr.drawString(d + " damage!", 300, 100);
-			}
-			catch (NullPointerException x)
-			{
-				System.out.println("Hell.");
-				x.printStackTrace();
-			}
+			
 			
 			isPlayerTurn = false;
 			//ends battle
