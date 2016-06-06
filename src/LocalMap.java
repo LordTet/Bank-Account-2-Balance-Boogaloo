@@ -1,70 +1,69 @@
+package src;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
 import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.Image;
 
 import java.util.Scanner;
-import java.util.Set;
+import java.io.PrintWriter;
 import java.awt.Font;
 import java.io.File;
+import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
+import java.util.Random;
 
 public class LocalMap extends BasicGameState
 {
 
-	ArrayList<Map> maps;
-	
-	TrueTypeFont crux;
-	
-	Map currentMap;
-	GameContainer gc;
-	boolean interacting = true;
-
-
-	
-	//temporary static player positions
-
-
-	
-	//Return 2d array of the correct size for tile.
-	
-	
-	
-	
-//<<<<<<< HEAD
-    
-	
-	//FOR PLAYER: Render player, use arrow key to add 30 to player position, lock input until they move to tile.
-//=======
-//>>>>>>> origin/master
-
+	private ArrayList<Map> maps;
+	private Random generator;
+	private TrueTypeFont crux;
+	private PrintWriter wr;
+	private Map currentMap;
+	private GameContainer gc;
+	public boolean interacting = true;
 	public String introText = null;
 	public boolean intro = true;
-
+	Battle battleState;
+	StateBasedGame game;
 	Player p1;
 	
+	public LocalMap(Battle x)
+	{
+		super();
+		x = battleState;
+	}
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
-		//Store the gamecontainer for use and create the player object
 		gc = arg0;
+		game = arg1;
 		p1 = new Player(0,9,18);
-		//crux = new Font("Coder's Crux", Font.PLAIN,24);
+		try 
+		{
+			wr = new PrintWriter("battle_enemy.txt");
+		} 
+		catch (FileNotFoundException e1) 
+		{
+			
+		}
 		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
 		//read the amount of files in folder of maps, create array of maps
-		
+		generator = new Random();
 		maps = new ArrayList<Map>();
 		try
 		{	
 			int g = 0;
 			while(true)
 			{
+				System.out.println("loading " + g);
 				Map x = new Map(this);
 				
 				if(!x.loadMap(g))
@@ -75,14 +74,13 @@ public class LocalMap extends BasicGameState
 				maps.add(x);
 				
 				g++;
-				System.out.println(g);
 			}
 		}
 		catch(Exception e)
 		{
 			System.out.println("OH NO");
 		}
-		changeMap(0);
+		changeMap(0, -1);
 
 		if(introText.equals(""))
 		{
@@ -92,12 +90,20 @@ public class LocalMap extends BasicGameState
 	}
 	
 	//Changes the map to the filenumber denoted by id
-	public void changeMap(int id)
+	public void changeMap(int id, int oldID)
 	{
-		System.out.println(maps);
-		currentMap = maps.get(id);
-		currentMap.loadMap(id);
+		if(oldID == -1)
+		{
+			currentMap = maps.get(id);
+			currentMap.loadMap(id);
+		}
+		else
+		{
+			currentMap = maps.get(id);
+			currentMap.loadMap(id, oldID,p1);
+		}
 	}
+
 
 	
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
@@ -177,11 +183,19 @@ public class LocalMap extends BasicGameState
 			}
 			String dialogue = interacted.interact;
 
-			System.out.println(dialogue);
-			
+
 			if(!dialogue.equals("null"))
 			{
+				//TEST MORE
+				/*
+				arg2.drawRect(199, 4, (dialogue.length()*10)+2, 52);
+				arg2.drawRect(200, 5, dialogue.length()*10, 50);
+				arg2.setColor(Color.black);
+				arg2.fillRect(201, 6, (dialogue.length()*10)-1, 49);
+				arg2.setColor(Color.white);
 				arg2.drawString(dialogue, 230, 10);
+				*/
+				drawTextBox(dialogue,arg2);
 			}
 			else if(dialogue.equals("null") && !intro)
 			{
@@ -191,14 +205,30 @@ public class LocalMap extends BasicGameState
 		}
 		else if(intro)
 		{
-			arg2.drawString(introText, 230, 10);
+			drawTextBox(introText, arg2);
 		}
 		
+	}
+	
+	public void drawTextBox(String text, Graphics g)
+	{
+		g.drawRect(199, 4, (text.length()*10)+2, 52);
+		g.drawRect(200, 5, text.length()*10, 50);
+		g.setColor(Color.black);
+		g.fillRect(201, 6, (text.length()*10)-1, 49);
+		g.setColor(Color.white);
+		g.drawString(text,203,23);
 	}
 
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
-		
+		for(int[] x : currentMap.doors)
+		{
+			if(p1.x == x[0] && p1.y == x[1])
+			{
+				changeMap(x[2],currentMap.mapID);
+			}
+		}
 	}
 	
 	public void keyPressed(int key, char c)
@@ -208,12 +238,6 @@ public class LocalMap extends BasicGameState
 			gc.exit();
 		}
 		System.out.println(key);
-		/*Up: 200
-		 *Down:208
-		 * Left:203
-		 * Right:205
-		 */
-
 		
 		if(key == 44)
 		{
@@ -231,14 +255,42 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 0;
 				p1.sprite = p1.upSprite;
-
-				if(currentMap.tiles[p1.x-1][p1.y].properties[0])
+				int ch = generator.nextInt(100);
+				if(currentMap.tiles[p1.x-1][p1.y].walkable)
 
 				{
 					p1.x--;
 					p1.between = -30;
 					p1.moving = true;
-				}
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						File e = new File("src/data/enemy1.txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								game.enterState(2);
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
+				} 
 
 				break;
 				
@@ -249,12 +301,42 @@ public class LocalMap extends BasicGameState
 				p1.sprite = p1.downSprite;
 				p1.direction = 2;
 
-				if(currentMap.tiles[p1.x+1][p1.y].properties[0])
+				if(currentMap.tiles[p1.x+1][p1.y].walkable)
 
 				{
 					p1.x++;
 					p1.between = -30;
 					p1.moving = true;
+					ch = generator.nextInt(100);
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						File e = new File("src/data/enemy1.txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								game.enterState(2);
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+							
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
 				}
 				break;
 				
@@ -263,13 +345,41 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 3;
 				p1.sprite = p1.leftSprite;
-
-				if(currentMap.tiles[p1.x][p1.y-1].properties[0])
+				ch = generator.nextInt(100);
+				if(currentMap.tiles[p1.x][p1.y-1].walkable)
 
 				{
 					p1.moving = true;
 					p1.between = -30;
 					p1.y--;
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						File e = new File("src/data/enemy1.txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								game.enterState(2);
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
 				}
 				break;
 				
@@ -278,17 +388,46 @@ public class LocalMap extends BasicGameState
 				
 				p1.direction = 1;
 				p1.sprite = p1.rightSprite;
-
-				if(currentMap.tiles[p1.x][p1.y+1].properties[0])
+				ch = generator.nextInt(100);
+				if(currentMap.tiles[p1.x][p1.y+1].walkable)
 
 				{
 					p1.y++;
 					p1.between = -30;
 					p1.moving = true;
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						File e = new File("src/data/enemy1.txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								game.enterState(2);
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+						
+					}
 				}
 				break;
 				
-
+				
 			}
 		}
 		

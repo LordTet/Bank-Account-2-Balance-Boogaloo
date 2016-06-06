@@ -1,3 +1,5 @@
+package src;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -29,9 +31,10 @@ public class Test extends StateBasedGame
  
     public void initStatesList(GameContainer container) throws SlickException
     {
+    	Battle x = new Battle();
         addState(new MainMenu());
-        addState(new LocalMap());
-       	addState(new Battle());
+       	addState(x);
+        addState(new LocalMap(x));
     }
  
 }

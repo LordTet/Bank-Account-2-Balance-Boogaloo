@@ -2,3 +2,4 @@
 *.class
 src/Test.class
 *.class
+/bin/

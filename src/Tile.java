@@ -1,3 +1,5 @@
+package src;
+
 import org.newdawn.slick.Image;
 public class Tile
 {
@@ -10,17 +12,12 @@ public class Tile
 	double chn;
 	public String interact = null;
 	public boolean interactable = false;
+	public boolean walkable;
 	
-
-	public boolean[] properties;
-	
-
 
 	public Tile(String x, boolean w, String y)
 	{
-		properties = new boolean[5];
-		properties[0] = w;
-		
+		walkable = w;
 		name = x;
 		interact = y;
 
@@ -31,7 +28,7 @@ public class Tile
 		}
 		catch(Exception e)
 		{
-			System.out.println("Image " + name + " not found!");
+			System.out.println("Image not found!");
 		}
 	}
 	

@@ -1,19 +1,21 @@
+package src;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Map
 {
 	public Tile[][] tiles;
 	private LocalMap wrap;
+	public int mapID;
 	
 	//Coordinate Data, saves entry/exit point for the map.
 	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load. Null means no teleport.
-	public int[] top = new int[3];
-	public int[] bottom = new int[3];
-	public int[] left = new int[3];
-	public int[] right = new int[3];
-	
+
+	public Set<int[]> doors;
 	
 	
 	
@@ -21,13 +23,16 @@ public class Map
 	public Map(LocalMap g)
 	{
 		wrap = g;
+		doors = new HashSet<int[]>();
 	}
 	
-	
-	public boolean loadMap(int mapnum)
+	//loads map sans enterance nodes
+	public boolean loadMap(int mapNum)
 	{
+		mapID = mapNum;
+		doors = new HashSet<int[]>();
 		tiles = new Tile[20][20];
-		File stage = new File("src/maps/" + mapnum + ".txt");
+		File stage = new File("src/maps/" + mapNum + ".txt");
 		Scanner x = null;
 		try 
 		{
@@ -59,7 +64,7 @@ public class Map
 				col = 0;
 			}
 		}
-		System.out.println("row: " + row + " col: " + maxCol);
+		System.out.println("MAP: " + mapNum);
 		
 		tiles = new Tile[row][maxCol];
 		
@@ -130,10 +135,74 @@ public class Map
 			}
 		}
 		
+		
+		int[] insert = new int[3];
+		String g = x.next();
+		int counter = 0;
+		while(!g.equals("end"))
+		{
+
+			insert[counter] = Integer.parseInt(g);
+			if(counter == 2)
+			{
+				doors.add(insert);
+				counter = -1;
+				insert = new int[3];
+			}
+			counter++;
+			g = x.next();
+
+		}
+		for(int[]y : doors)
+		{
+			System.out.println(y[0]);
+			System.out.println(y[1]);
+			System.out.println(y[2]);
+		}
+		
+		
 		x.close();
 		return true;
 	}
 	
+	
+	//Loads the map, and places the player in the proper location as dictated by the map file
+	public boolean loadMap(int mapNum, int oldMapNum, Player p1)
+	{
+		Scanner x = null;
+		loadMap(mapNum);
+		File stage = new File("src/maps/" + mapNum + ".txt");
+		try
+		{
+			x = new Scanner(stage);
+		}
+		catch(FileNotFoundException e)
+		{
+			return false;
+		}
+		String current = x.next();
+		while(!current.equals("end"))
+		{
+			current = x.next();
+		}
+		if(x.hasNext())
+		{
+			int newX = Integer.parseInt(x.next());
+			int newY = Integer.parseInt(x.next());
+			int source = Integer.parseInt(x.next());
+			
+			if(oldMapNum == source)
+			{
+				p1.x = newX;
+				p1.y = newY;
+			}
+		}
+		
+		
+		
+		return true;
+		
+	}
 	
 	
 	
