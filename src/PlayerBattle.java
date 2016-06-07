@@ -27,8 +27,9 @@ public class PlayerBattle
         for (int i = exp; i > 10; i-= 10)
         {
             maxHP+= 2;
-            atk++;
-            def++;
+            HP+= 2;
+            atk+=2;
+            def+=2;
             spd++;
             lck++;
             lv++;
@@ -43,11 +44,17 @@ public class PlayerBattle
     public int attack(Enemy other)
     {
        
-        int plus = generator.nextInt(2);
+        int plus = generator.nextInt(lck);
         if (((atk + plus) - other.def) > 0)
         {
         	int damage = (atk + plus) - other.def;
-            other.HP -= damage;
+            if (other.HP - damage < 0)
+            {
+            	damage = other.HP;
+            	other.HP = 0;
+            }
+            else
+            	other.HP -= damage;
             return damage;
         }
         else
