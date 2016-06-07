@@ -1,0 +1,3 @@
+src/txtr/2.png
+false
+This tile is different from the rest... ~
