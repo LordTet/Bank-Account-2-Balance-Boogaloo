@@ -73,7 +73,7 @@ public class LocalMap extends BasicGameState
 		
 	}
 	
-	//Changes the map to the filenumber denoted by id
+	//Changes the map to the file number denoted by id
 	public void changeMap(int id, int oldID)
 	{
 		if(oldID == -1)
@@ -91,7 +91,6 @@ public class LocalMap extends BasicGameState
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
-		
 		arg2.setFont(crux);
 		
 		int xloc = 100;
@@ -139,6 +138,24 @@ public class LocalMap extends BasicGameState
 			{
 				p1.between = -30;
 				p1.moving = false;
+				
+				switch(p1.direction)
+				{
+				case 0:
+					p1.sprite = p1.upSprite;
+					break;
+				case 1:
+					p1.sprite = p1.rightSprite;
+					break;
+				case 2:
+					p1.sprite = p1.downSprite;
+					break;
+				case 3:
+					p1.sprite = p1.leftSprite;
+					break;
+				}
+
+				
 			}
 
 		}
@@ -186,7 +203,15 @@ public class LocalMap extends BasicGameState
 		}
 		else if(intro)
 		{
-			drawTextBox(introText, arg2);
+			if(introText.equals("null"))
+			{
+				intro = false;
+			}
+			else
+			{
+				drawTextBox(introText, arg2);	
+			}
+
 		}
 		
 	}
@@ -210,6 +235,7 @@ public class LocalMap extends BasicGameState
 				changeMap(x[2],currentMap.mapID);
 			}
 		}
+		
 	}
 	
 	public void keyPressed(int key, char c)
@@ -235,7 +261,7 @@ public class LocalMap extends BasicGameState
 			case 200:
 				
 				p1.direction = 0;
-				p1.sprite = p1.upSprite;
+				p1.sprite = p1.movingUpSprite;
 				if(currentMap.tiles[p1.x-1][p1.y].walkable)
 				{
 					p1.x--;
@@ -248,9 +274,8 @@ public class LocalMap extends BasicGameState
 			//down
 			case 208:
 				
-				
-				p1.sprite = p1.downSprite;
 				p1.direction = 2;
+				p1.sprite = p1.movingDownSprite;
 				if(currentMap.tiles[p1.x+1][p1.y].walkable)
 				{
 					p1.x++;
@@ -263,7 +288,7 @@ public class LocalMap extends BasicGameState
 			case 203:
 				
 				p1.direction = 3;
-				p1.sprite = p1.leftSprite;
+				p1.sprite = p1.movingLeftSprite;
 				if(currentMap.tiles[p1.x][p1.y-1].walkable)
 				{
 					p1.moving = true;
@@ -276,7 +301,7 @@ public class LocalMap extends BasicGameState
 			case 205:
 				
 				p1.direction = 1;
-				p1.sprite = p1.rightSprite;
+				p1.sprite = p1.movingRightSprite;
 				if(currentMap.tiles[p1.x][p1.y+1].walkable)
 				{
 					p1.y++;
