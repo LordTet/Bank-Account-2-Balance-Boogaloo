@@ -1,5 +1,3 @@
-package src;
-
 import org.newdawn.slick.Image;
 public class Tile
 {
@@ -14,7 +12,6 @@ public class Tile
 	public boolean interactable = false;
 	public boolean walkable;
 	
-
 	public Tile(String x, boolean w, String y)
 	{
 		walkable = w;

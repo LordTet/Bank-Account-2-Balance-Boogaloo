@@ -1,11 +1,10 @@
-package src;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import java.util.Random;
+
 public class Enemy
 {
     Image sprite;
@@ -61,6 +60,7 @@ public class Enemy
    
     public int attack(PlayerBattle ply)
     {
+
     	if((atk - ply.def > 0))
     	{
     		int dam = (atk + generator.nextInt(3)) - ply.def;
@@ -71,4 +71,3 @@ public class Enemy
     		return 0;
     }
 }
-

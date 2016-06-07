@@ -1,5 +1,3 @@
-package src;
-
 import org.newdawn.slick.Image; 
 import java.util.Random;
  
@@ -23,7 +21,6 @@ public class PlayerBattle
         def = 3;
         spd = 3;
         lck = 3;
-        
         for (int i = exp; i > 10; i-= 10)
         {
             maxHP+= 2;
@@ -71,8 +68,7 @@ public class PlayerBattle
     	   return diff;
        }
        return 5;
-    }
-   
+    }   
     public boolean flee(Enemy other)
     {
         int fleeChance = 60 - (other.spd * 10) + (spd * 10);
@@ -86,6 +82,5 @@ public class PlayerBattle
             return false;
         }
     }
-   
-   
 }
+

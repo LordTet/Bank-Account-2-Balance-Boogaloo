@@ -1,13 +1,15 @@
-package src;
-
 import org.newdawn.slick.Image;
 public class Player 
 {
 	public Image sprite;
 	public Image leftSprite;
+	public Image movingLeftSprite;
 	public Image rightSprite;
+	public Image movingRightSprite;
 	public Image upSprite;
+	public Image movingUpSprite;
 	public Image downSprite;
+	public Image movingDownSprite;
 	public int x;
 	public int y;
 	public int direction;
@@ -24,7 +26,10 @@ public class Player
 			rightSprite = new Image("src/txtr/pcright1.png");
 			downSprite = new Image("src/txtr/pcfront1.png");
 			upSprite = new Image("src/txtr/pcback1.png");
-			
+			movingUpSprite = new Image("src/txtr/pcback2.png");
+			movingDownSprite = new Image("src/txtr/pcfront2.png");
+			movingLeftSprite = new Image("src/txtr/pcleft2.png");
+			movingRightSprite = new Image("src/txtr/pcright2.png");
 		}
 		catch(Exception e)
 		{
@@ -37,15 +42,18 @@ public class Player
 		switch(dir)
 		{
 		
+		//facing right
 		case 1:
 			direction = 1;
 			sprite = rightSprite;
 			break;
-			
+		//facing down
 		case 2:
 			direction = 2;
 			sprite = downSprite;
 			break;
+			
+		//facing left
 		case 3:
 			direction = 3;
 			sprite = leftSprite;
