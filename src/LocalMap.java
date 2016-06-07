@@ -32,6 +32,7 @@ public class LocalMap extends BasicGameState
 	public boolean interacting = true;
 	public String introText = null;
 	public boolean intro = true;
+	public boolean battleChange = false;
 	Battle battleState;
 	StateBasedGame game;
 	Player p1;
@@ -39,7 +40,7 @@ public class LocalMap extends BasicGameState
 	public LocalMap(Battle x)
 	{
 		super();
-		x = battleState;
+		battleState = x;
 	}
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
@@ -229,6 +230,13 @@ public class LocalMap extends BasicGameState
 				changeMap(x[2],currentMap.mapID);
 			}
 		}
+		
+		if (battleChange)
+		{
+			battleState.init(arg0, arg1);
+			battleChange = false;
+			arg1.enterState(2);
+		}
 	}
 	
 	public void keyPressed(int key, char c)
@@ -265,7 +273,8 @@ public class LocalMap extends BasicGameState
 					if (ch < 25)
 					{
 						File f = new File("src/data/battle_enemy.txt");
-						File e = new File("src/data/enemy1.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
 						try 
 						{
 							PrintWriter pw = new PrintWriter(f);
@@ -278,7 +287,7 @@ public class LocalMap extends BasicGameState
 							sc.close();
 							try
 							{
-								game.enterState(2);
+								battleChange = true;
 							}
 							catch(RuntimeException exc)
 							{
@@ -311,7 +320,8 @@ public class LocalMap extends BasicGameState
 					if (ch < 25)
 					{
 						File f = new File("src/data/battle_enemy.txt");
-						File e = new File("src/data/enemy1.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
 						try 
 						{
 							PrintWriter pw = new PrintWriter(f);
@@ -322,14 +332,7 @@ public class LocalMap extends BasicGameState
 							}
 							pw.close();
 							sc.close();
-							try
-							{
-								game.enterState(2);
-							}
-							catch(RuntimeException exc)
-							{
-								exc.printStackTrace();
-							}
+							battleChange = true;
 							
 						} 
 						catch (FileNotFoundException e1) 
@@ -355,7 +358,8 @@ public class LocalMap extends BasicGameState
 					if (ch < 25)
 					{
 						File f = new File("src/data/battle_enemy.txt");
-						File e = new File("src/data/enemy1.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
 						try 
 						{
 							PrintWriter pw = new PrintWriter(f);
@@ -368,7 +372,7 @@ public class LocalMap extends BasicGameState
 							sc.close();
 							try
 							{
-								game.enterState(2);
+								battleChange = true;
 							}
 							catch(RuntimeException exc)
 							{
@@ -398,7 +402,8 @@ public class LocalMap extends BasicGameState
 					if (ch < 25)
 					{
 						File f = new File("src/data/battle_enemy.txt");
-						File e = new File("src/data/enemy1.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
 						try 
 						{
 							PrintWriter pw = new PrintWriter(f);
@@ -411,7 +416,7 @@ public class LocalMap extends BasicGameState
 							sc.close();
 							try
 							{
-								game.enterState(2);
+								battleChange = true;
 							}
 							catch(RuntimeException exc)
 							{
