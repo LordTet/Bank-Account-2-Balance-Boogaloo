@@ -1,0 +1,8 @@
+[IntroText]
+a 20 row 20 col grid of tile IDs to draw out the map
+"j" without quotes, representing the end of the grid
+if there's an exit: "[row of the door tile] [col of the door tile] [room ID to transport to]"
+as many of the exits in line 4 as you want, each on a new line until the keyword "end"
+"end" without quotes
+if there's an entrance: "[row of the entrance tile] [col of the entrance tile] [room ID that the door is from]
+as many entrances as you want, in the same notation as line 7.

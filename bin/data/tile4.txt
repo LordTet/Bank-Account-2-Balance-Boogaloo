@@ -1,0 +1,3 @@
+src/txtr/4.png
+true
+A door ~
