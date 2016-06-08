@@ -1,11 +1,11 @@
-import org.newdawn.slick.Image;
- 
+import org.newdawn.slick.Image; 
 import java.util.Random;
  
 public class PlayerBattle
 {
     Image spriteNormal;
-    public int HP;
+    public int maxHP;
+    public static int HP = 0;
     public static int lv = 1;
     public int atk;
     public int def;
@@ -16,40 +16,64 @@ public class PlayerBattle
    
     public PlayerBattle()
     {
-        HP = 10;
+        maxHP = 10;
         atk = 3;
         def = 3;
         spd = 3;
         lck = 3;
-        for (int i = lv; i > 1; i--)
+        for (int i = exp; i > 10; i-= 10)
         {
+            maxHP+= 2;
             HP+= 2;
-            atk++;
-            def++;
+            atk+=2;
+            def+=2;
             spd++;
             lck++;
+            lv++;
+            exp-=10;
+        }
+        if (exp == 0)
+        {
+        	HP = maxHP;
         }
     }
    
     public int attack(Enemy other)
     {
        
-        int plus = generator.nextInt(2);
-        int damage = (atk + plus) - other.def;
-        other.HP -= damage;
-        return damage;
+        int plus = generator.nextInt(lck);
+        if (((atk + plus) - other.def) > 0)
+        {
+        	int damage = (atk + plus) - other.def;
+            if (other.HP - damage < 0)
+            {
+            	damage = other.HP;
+            	other.HP = 0;
+            }
+            else
+            	other.HP -= damage;
+            return damage;
+        }
+        else
+        	return 0;
     }
    
-    /*public void useItem(Item it)
+    public int heal()
     {
-       
-    }*/
-   
+       int diff = maxHP - HP;
+       HP += 5;
+       if (HP > maxHP)
+       {
+    	   HP = maxHP;
+    	   return diff;
+       }
+       return 5;
+    }   
     public boolean flee(Enemy other)
     {
         int fleeChance = 60 - (other.spd * 10) + (spd * 10);
-        double fl = (double)fleeChance / 100;
-        if (generator.nextDouble() < fl)
+        int rand = generator.nextInt(100);
+        if (rand < fleeChance)
         {
             return true;
         }
@@ -58,6 +82,5 @@ public class PlayerBattle
             return false;
         }
     }
-   
-   
 }
+

@@ -5,42 +5,56 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
 import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.Image;
 import java.util.Scanner;
 import java.awt.Font;
 import java.io.File;
+import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
+import java.util.Random;
 public class LocalMap extends BasicGameState
 {
 
 	private ArrayList<Map> maps;
-	
+	private Random generator;
 	private TrueTypeFont crux;
-	
+	private PrintWriter wr;
 	private Map currentMap;
 	private GameContainer gc;
 	public boolean interacting = true;
 	public String introText = null;
 	public boolean intro = true;
+	public boolean battleChange = false;
 	Battle battleState;
-
+	StateBasedGame game;
 	Player p1;
 	
 	public LocalMap(Battle x)
 	{
 		super();
-		x = battleState;
+		battleState = x;
 	}
+	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		gc = arg0;
+		game = arg1;
 		p1 = new Player(0,9,18);
+		try 
+		{
+			wr = new PrintWriter("battle_enemy.txt");
+		} 
+		catch (FileNotFoundException e1) 
+		{
+			
+		}
+
 		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
 		//read the amount of files in folder of maps, create array of maps
-		
+		generator = new Random();
 		maps = new ArrayList<Map>();
 		try
 		{	
@@ -62,7 +76,7 @@ public class LocalMap extends BasicGameState
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			System.out.println("OH NO");
 		}
 		changeMap(0, -1);
 
@@ -74,6 +88,7 @@ public class LocalMap extends BasicGameState
 	}
 	
 	//Changes the map to the file number denoted by id
+
 	public void changeMap(int id, int oldID)
 	{
 		if(oldID == -1)
@@ -87,6 +102,7 @@ public class LocalMap extends BasicGameState
 			currentMap.loadMap(id, oldID,p1);
 		}
 	}
+
 	
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
@@ -203,6 +219,7 @@ public class LocalMap extends BasicGameState
 		}
 		else if(intro)
 		{
+
 			if(introText.equals("null"))
 			{
 				intro = false;
@@ -211,7 +228,6 @@ public class LocalMap extends BasicGameState
 			{
 				drawTextBox(introText, arg2);	
 			}
-
 		}
 		
 	}
@@ -236,6 +252,12 @@ public class LocalMap extends BasicGameState
 			}
 		}
 		
+		if (battleChange)
+		{
+			battleState.init(arg0, arg1);
+			battleChange = false;
+			arg1.enterState(2);
+		}
 	}
 	
 	public void keyPressed(int key, char c)
@@ -261,13 +283,46 @@ public class LocalMap extends BasicGameState
 			case 200:
 				
 				p1.direction = 0;
+
 				p1.sprite = p1.movingUpSprite;
+				
 				if(currentMap.tiles[p1.x-1][p1.y].walkable)
+
 				{
+					int ch = generator.nextInt(100);
 					p1.x--;
 					p1.between = -30;
 					p1.moving = true;
-				}
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								battleChange = true;
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
+				} 
 
 				break;
 				
@@ -275,12 +330,39 @@ public class LocalMap extends BasicGameState
 			case 208:
 				
 				p1.direction = 2;
+
 				p1.sprite = p1.movingDownSprite;
+
 				if(currentMap.tiles[p1.x+1][p1.y].walkable)
+
 				{
 					p1.x++;
 					p1.between = -30;
 					p1.moving = true;
+					int ch = generator.nextInt(100);
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							battleChange = true;
+							
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
 				}
 				break;
 				
@@ -288,12 +370,44 @@ public class LocalMap extends BasicGameState
 			case 203:
 				
 				p1.direction = 3;
+
 				p1.sprite = p1.movingLeftSprite;
+
 				if(currentMap.tiles[p1.x][p1.y-1].walkable)
 				{
+					int ch = generator.nextInt(100);
 					p1.moving = true;
 					p1.between = -30;
 					p1.y--;
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								battleChange = true;
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
 				}
 				break;
 				
@@ -301,16 +415,50 @@ public class LocalMap extends BasicGameState
 			case 205:
 				
 				p1.direction = 1;
+
+
 				p1.sprite = p1.movingRightSprite;
+
 				if(currentMap.tiles[p1.x][p1.y+1].walkable)
 				{
+					int ch = generator.nextInt(100);
 					p1.y++;
 					p1.between = -30;
 					p1.moving = true;
+					if (ch < 25)
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						int enemyfile = generator.nextInt(2) + 1;
+						File e = new File("src/data/enemy" + enemyfile + ".txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								battleChange = true;
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+						
+					}
 				}
 				break;
 				
-
+				
 			}
 		}
 		
