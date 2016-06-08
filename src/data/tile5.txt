@@ -1,0 +1,3 @@
+src/txtr/5.png
+false
+A tree, majestic as obviously seen by the amazing art. ~
