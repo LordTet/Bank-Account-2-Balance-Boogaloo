@@ -151,13 +151,6 @@ public class Map
 			g = x.next();
 
 		}
-		for(int[]y : doors)
-		{
-			System.out.println(y[0]);
-			System.out.println(y[1]);
-			System.out.println(y[2]);
-		}
-		
 		
 		x.close();
 		return true;
@@ -183,14 +176,17 @@ public class Map
 		{
 			current = x.next();
 		}
-		if(x.hasNext())
+		System.out.println(oldMapNum);
+		while(x.hasNext())
 		{
 			int newX = Integer.parseInt(x.next());
 			int newY = Integer.parseInt(x.next());
 			int source = Integer.parseInt(x.next());
-			
+			System.out.println("Ayy:" +  source);
 			if(oldMapNum == source)
 			{
+				System.out.println(newX);
+				System.out.println(newY);
 				p1.x = newX;
 				p1.y = newY;
 			}
