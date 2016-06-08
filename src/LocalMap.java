@@ -293,7 +293,7 @@ public class LocalMap extends BasicGameState
 					p1.x--;
 					p1.between = -30;
 					p1.moving = true;
-					if (ch < 25)
+					if (ch < 2)
 					{
 						File f = new File("src/data/battle_enemy.txt");
 						int enemyfile = generator.nextInt(2) + 1;
@@ -340,7 +340,7 @@ public class LocalMap extends BasicGameState
 					p1.between = -30;
 					p1.moving = true;
 					int ch = generator.nextInt(100);
-					if (ch < 25)
+					if (ch < 2)
 					{
 						File f = new File("src/data/battle_enemy.txt");
 						int enemyfile = generator.nextInt(2) + 1;
@@ -379,7 +379,7 @@ public class LocalMap extends BasicGameState
 					p1.moving = true;
 					p1.between = -30;
 					p1.y--;
-					if (ch < 25)
+					if (ch < 2)
 					{
 						File f = new File("src/data/battle_enemy.txt");
 						int enemyfile = generator.nextInt(2) + 1;
@@ -425,7 +425,7 @@ public class LocalMap extends BasicGameState
 					p1.y++;
 					p1.between = -30;
 					p1.moving = true;
-					if (ch < 25)
+					if (ch < 2)
 					{
 						File f = new File("src/data/battle_enemy.txt");
 						int enemyfile = generator.nextInt(2) + 1;
