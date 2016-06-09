@@ -6,7 +6,7 @@ public class PlayerBattle
     Image spriteNormal;
     public int maxHP;
     public static int HP = 0;
-    public static int lv = 1;
+    public int lv = 1;
     public int atk;
     public int def;
     public int spd;
@@ -16,22 +16,23 @@ public class PlayerBattle
    
     public PlayerBattle()
     {
-        maxHP = 10;
+        maxHP = 15;
         atk = 3;
         def = 3;
         spd = 3;
         lck = 3;
+        int tempexp = exp;
         for (int i = exp; i > 10; i-= 10)
         {
             maxHP+= 2;
-            HP+= 2;
-            atk+=2;
-            def+=2;
+            atk++;
+            def++;
             spd++;
             lck++;
             lv++;
             exp-=10;
         }
+        exp = tempexp;
         if (exp == 0)
         {
         	HP = maxHP;

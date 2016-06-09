@@ -195,7 +195,7 @@ public class Battle extends BasicGameState
 		else if ((inp.getAbsoluteMouseX() > 499 && inp.getAbsoluteMouseX() < 661) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 499) && inp.isMousePressed(Input.MOUSE_LEFT_BUTTON) && isPlayerTurn)
 		{
 			boolean flee = ply.flee(ene);
-			if(flee)
+			if(flee && !(ene.name.equals("Cyber Angel")))
 			{
 				game.enterState(1);
 			}

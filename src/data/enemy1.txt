@@ -2,9 +2,9 @@ src/txtr/enemy1.png
 RGB
 5
 4
-1
-1
-3
+2
+2
+5
 The red face laughs at you.
 The blue face just keeps crying.
 The green face looks at you, expressionless.
