@@ -375,6 +375,34 @@ public class LocalMap extends BasicGameState
 
 				if(currentMap.tiles[p1.x][p1.y-1].walkable)
 				{
+					if (currentMap.tiles[p1.x][p1.y-1].name.contains("6.png"))
+					{
+						File f = new File("src/data/battle_enemy.txt");
+						File e = new File("src/data/boss.txt");
+						try 
+						{
+							PrintWriter pw = new PrintWriter(f);
+							Scanner sc = new Scanner(e);
+							while(sc.hasNextLine())
+							{
+								pw.println(sc.nextLine());
+							}
+							pw.close();
+							sc.close();
+							try
+							{
+								battleChange = true;
+							}
+							catch(RuntimeException exc)
+							{
+								exc.printStackTrace();
+							}
+						} 
+						catch (FileNotFoundException e1) 
+						{
+							System.out.println("Damn.");
+						}
+					}
 					int ch = generator.nextInt(100);
 					p1.moving = true;
 					p1.between = -30;

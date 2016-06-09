@@ -1,0 +1,9 @@
+src/txtr/boss.png
+Cyber Angel
+20
+4
+3
+2
+30
+It REALLY wants you dead.
+An aura of fear emanates from it...

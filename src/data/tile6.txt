@@ -1,0 +1,3 @@
+src/txtr/6.png
+true
+... ~
