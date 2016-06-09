@@ -40,6 +40,7 @@ public class LocalMap extends BasicGameState
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
+		battleState.give(this);
 		gc = arg0;
 		game = arg1;
 		p1 = new Player(2,10,10);
