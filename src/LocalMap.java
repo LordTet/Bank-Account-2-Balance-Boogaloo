@@ -40,9 +40,10 @@ public class LocalMap extends BasicGameState
 	
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
+		battleState.give(this);
 		gc = arg0;
 		game = arg1;
-		p1 = new Player(0,9,18);
+		p1 = new Player(2,10,10);
 		try 
 		{
 			wr = new PrintWriter("battle_enemy.txt");
@@ -149,7 +150,7 @@ public class LocalMap extends BasicGameState
 				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
-			p1.between+=1.5;
+			p1.between+=4;
 			if(p1.between >= 0.0)
 			{
 				p1.between = -30;
