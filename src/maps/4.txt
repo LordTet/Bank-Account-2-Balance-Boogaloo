@@ -1,4 +1,4 @@
-Reality glitches in front of you for a second.
+Reality glitches in front of you for a moment.
 0 0 0 0 0 0 0 0 5 5 3 5 0 0 0 0 0 0 0 0 k
 0 0 0 0 0 0 0 0 5 1 5 5 0 0 0 0 0 0 0 0 k
 0 0 0 0 0 0 0 0 5 1 1 5 0 0 0 0 0 0 0 0 k
@@ -28,9 +28,13 @@ j
 12 19 5
 13 19 5
 14 19 5
+19 8 3
+19 9 3
+19 10 3
+19 11 3
 end
+18 10 3
 19 9 1
 19 10 1
 19 11 1
 19 12 1
-j
