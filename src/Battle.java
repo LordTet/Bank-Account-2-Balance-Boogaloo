@@ -14,7 +14,7 @@ public class Battle extends BasicGameState
 {
 	GameContainer gc;
 	StateBasedGame game;
-	
+	LocalMap map;
 	Image player;
 	Image opponent;
 	Image fight;
@@ -41,6 +41,11 @@ public class Battle extends BasicGameState
 	int edcount;
 	int dcount;
 	int healcount;
+	
+	public void give(LocalMap x)
+	{
+		map = x;
+	}
 	
 	//sprite stuff
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
@@ -195,7 +200,7 @@ public class Battle extends BasicGameState
 		else if ((inp.getAbsoluteMouseX() > 499 && inp.getAbsoluteMouseX() < 661) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 499) && inp.isMousePressed(Input.MOUSE_LEFT_BUTTON) && isPlayerTurn)
 		{
 			boolean flee = ply.flee(ene);
-			if(flee)
+			if(flee && !(ene.name.equals("Cyber Angel")))
 			{
 				game.enterState(1);
 			}
