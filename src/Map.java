@@ -1,3 +1,7 @@
+//Object: Map
+//By Jake Holtham
+//Due 6/10/16
+//Mr. Segall | Data Structures | Period 1
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -12,11 +16,7 @@ public class Map
 	
 	//Coordinate Data, saves entry/exit point for the map.
 	//ARRAY MEANING: 0 = x coord, 1 = y coord, 2 = map to load. Null means no teleport.
-
 	public Set<int[]> doors;
-	
-	
-	
 	
 	public Map(LocalMap g)
 	{
@@ -27,6 +27,7 @@ public class Map
 	//loads map sans enterance nodes
 	public boolean loadMap(int mapNum)
 	{
+		
 		mapID = mapNum;
 		doors = new HashSet<int[]>();
 		tiles = new Tile[20][20];
@@ -41,6 +42,7 @@ public class Map
 			return false;
 		}
 		
+		//Get the entrance text
 		wrap.introText = x.nextLine();
 		wrap.intro = true;
 		wrap.interacting = true;
@@ -48,6 +50,7 @@ public class Map
 		int row = 0;
 		int col = 0;
 		int maxCol = 0;
+		//see how large the map file is
 		while(x.hasNext())
 		{
 			col++;
@@ -62,7 +65,7 @@ public class Map
 				col = 0;
 			}
 		}
-		System.out.println("MAP: " + mapNum);
+		System.out.println("MAP LOADING: " + mapNum);
 		
 		tiles = new Tile[row][maxCol];
 		
@@ -75,7 +78,7 @@ public class Map
 		}
 		catch(Exception e)
 		{
-			//System.out.println(e);
+			
 		}
 		
 		
@@ -83,23 +86,21 @@ public class Map
 		col = 0;
 		
 		String current = "k";
+		//Actualyl construct the tile map
 		while(!current.equals("j"))
 		{
 			current = x.next();
-			
-			//TODO: make map generation draw nothing on null.
 			if(current.equals("x"))
 			{
 				tiles[row][col] = null;
 			}
+			//Loads tile
 			else if(!current.equals("k") && !current.equals("j"))
 			{
 
 				String path = "src/txtr/";
 				path += Integer.parseInt(current) + ".png";
 
-				
-				
 				Scanner tileScanner = null;
 				try
 				{
@@ -113,6 +114,8 @@ public class Map
 				Boolean walk = tileScanner.nextBoolean();
 				String interact = "";
 				String additive = tileScanner.next();
+				
+				//Pulls tile interaction text
 				while(!additive.equals("~"))
 				{
 					interact = interact + " " + additive;
@@ -122,6 +125,7 @@ public class Map
 				tiles[row][col] = new Tile(spritePath, walk, interact);
 				col++;
 			}
+			//Enters at the end of the tile area of the map file
 			else if(current.equals("j"))
 			{
 				row--;
@@ -134,6 +138,7 @@ public class Map
 		}
 		
 		
+		//Read the doors area of the map file
 		int[] insert = new int[3];
 		String g = x.next();
 		int counter = 0;

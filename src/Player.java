@@ -1,3 +1,7 @@
+//Object: Player
+//By Jake Holtham
+//Due 6/10/16
+//Mr. Segall | Data Structures | Period 1
 import org.newdawn.slick.Image;
 public class Player 
 {
@@ -20,6 +24,7 @@ public class Player
 	{
 		this.x = x;
 		this.y = y;
+		//load images
 		try
 		{
 			leftSprite = new Image("src/txtr/pcleft1.png");
@@ -63,9 +68,9 @@ public class Player
 		
 		
 	}
+	//handles sprite drawing based on tile and its location
 	public void draw(Tile g)
 	{
-		//System.out.println(g.cornerX);
 		sprite.draw(g.cornerX, g.cornerY);
 	}
 	
