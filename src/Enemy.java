@@ -1,3 +1,7 @@
+//Class: Enemy
+//By Christian Wettre
+//Due 6/10/16
+//Mr Segall | Data Structures | Period 1
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -5,10 +9,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import java.util.Random;
 
-//Class: Enemy
-//By Christian Wettre
-//Due 6/10/16
-//Mr Segall | Data Structures | Period 1
+
 public class Enemy
 {
     Image sprite;

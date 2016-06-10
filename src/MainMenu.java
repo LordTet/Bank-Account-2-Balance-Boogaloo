@@ -8,8 +8,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.EmptyTransition;
-import java.io.File;
 import org.newdawn.slick.Color;
 
 //Constructor initializes the title image
@@ -51,7 +49,7 @@ public class MainMenu extends BasicGameState
     	switch(key)
     	{
     	case 2:
-    		game.enterState(1, new EmptyTransition(), new EmptyTransition());
+    		game.enterState(1);
     		break;
     	case 3:
     		contain.exit();

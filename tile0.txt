@@ -1,3 +1,0 @@
-src/maps/0.png
-false
-null

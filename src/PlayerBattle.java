@@ -1,10 +1,11 @@
-import org.newdawn.slick.Image; 
-import java.util.Random;
-
 //Class: PlayerBattle
 //By Christian Wettre
 //Due 6/10/16
 //Mr Segall | Data Structures | Period 1
+import org.newdawn.slick.Image; 
+import java.util.Random;
+
+
 public class PlayerBattle
 {
     Image spriteNormal;

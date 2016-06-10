@@ -10,8 +10,7 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.EmptyTransition;
-import org.newdawn.slick.util.FontUtils;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import java.util.Scanner;
 import java.awt.Font;
 import java.io.File;
@@ -243,12 +242,12 @@ public class LocalMap extends BasicGameState
 	//Wrapper method for drawstring, draws the entire text box with string "Text"
 	public void drawTextBox(String text, Graphics g)
 	{
-		g.drawRect(199, 4, (text.length()*10)+2, 52);
-		g.drawRect(200, 5, text.length()*10, 50);
+		g.drawRect(-3, -3, 1000, 100);
+		g.drawRect(-3, -3, 1000, 100);
 		g.setColor(Color.black);
-		g.fillRect(201, 6, (text.length()*10)-1, 49);
+		g.fillRect(-3, -3, 1000, 99);
 		g.setColor(Color.white);
-		g.drawString(text,203,23);
+		g.drawString(text,30,50);
 	}
 
 	//Some basic game logic, checks if the current tile is a "door" tile, and checks when to change into the battle state.
@@ -266,7 +265,7 @@ public class LocalMap extends BasicGameState
 		{
 			battleState.init(arg0, arg1);
 			battleChange = false;
-			arg1.enterState(2);
+			arg1.enterState(2, new EmptyTransition(), new HorizontalSplitTransition());
 		}
 	}
 	

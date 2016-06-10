@@ -1,8 +1,11 @@
+//Class: Test / Main
+//By Christian Wettre, Jake Holtham, Andrew Soque
+//Due 6/10/16
+//Mr Segall | Data Structures | Period 1
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import java.util.Scanner;
 public class Test extends StateBasedGame
 {
 
@@ -34,6 +37,7 @@ public class Test extends StateBasedGame
         addState(new MainMenu());
        	addState(x);
         addState(new LocalMap(x));
+        addState(new DeathScreen());
     }
  
 }

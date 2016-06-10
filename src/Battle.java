@@ -1,3 +1,7 @@
+//Class: PlayerBattle
+//By Christian Wettre
+//Due 6/10/16
+//Mr Segall | Data Structures | Period 1
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -6,14 +10,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Image;
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
 
-//Class: PlayerBattle
-//By Christian Wettre
-//Due 6/10/16
-//Mr Segall | Data Structures | Period 1
+
 public class Battle extends BasicGameState
 {
 	GameContainer gc;
@@ -204,7 +202,7 @@ public class Battle extends BasicGameState
 		//"item" method; heals the player
 		else if ((inp.getAbsoluteMouseX() > 299 && inp.getAbsoluteMouseX() < 459) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 499) && inp.isMousePressed(0) && isPlayerTurn)
 		{
-			int heal = ply.heal();
+			ply.heal();
 			healcount = 30;
 			isPlayerTurn = false;
 		}
@@ -228,7 +226,7 @@ public class Battle extends BasicGameState
 			if (ply.HP <= 0)
 			{
 				ply.exp = 0;
-				game.enterState(0);
+				game.enterState(4);
 			}
 			isPlayerTurn = true;
 		}
