@@ -8,9 +8,9 @@ public class Test extends StateBasedGame
 
     public static void main(String[] args)
     {
-    	System.out.println("lmao");
         try 
         {
+        	//Set up the game container, and set the framerate / screen resolution
         	AppGameContainer container = new AppGameContainer(new Test());
         	container.setTargetFrameRate(60);
             container.setDisplayMode(800,600,false);
@@ -24,9 +24,10 @@ public class Test extends StateBasedGame
     }
     public Test()
     {
-        super("Test");
+    	//Amazing name
+        super("#DankAccount");
     }
- 
+    //Initialize the states
     public void initStatesList(GameContainer container) throws SlickException
     {
     	Battle x = new Battle();

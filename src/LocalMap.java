@@ -1,3 +1,7 @@
+//State:Local Map
+//By Jake Holtham and Andrew Soque
+//Due 6/10/16
+//Mr. Segall | Data Structures | Period 1
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -32,12 +36,16 @@ public class LocalMap extends BasicGameState
 	StateBasedGame game;
 	Player p1;
 	
+	//Custom constructor for retrieving the battle state
+	//Calls superclass constructor, and saves the battle state
 	public LocalMap(Battle x)
 	{
 		super();
 		battleState = x;
 	}
 	
+	
+	//Initialize required variables, and read in every map in src/maps/ numerically
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
 	{
 		battleState.give(this);
@@ -52,9 +60,10 @@ public class LocalMap extends BasicGameState
 		{
 			
 		}
-
+		//The font used for the game
 		crux = new TrueTypeFont(new Font("Coder's Crux", Font.PLAIN,24), false);
-		//read the amount of files in folder of maps, create array of maps
+		
+		//Read the amount of files in folder of maps, create an array list of maps
 		generator = new Random();
 		maps = new ArrayList<Map>();
 		try
@@ -88,10 +97,10 @@ public class LocalMap extends BasicGameState
 		
 	}
 	
-	//Changes the map to the file number denoted by id
-
+	//Changes the map to the file number denoted by id. also passes in oldID to tell the loadMap method the current map. 
 	public void changeMap(int id, int oldID)
 	{
+		//if a map wasnt loaded yet, load the first one. Else load the next map as told by the map file.
 		if(oldID == -1)
 		{
 			currentMap = maps.get(id);
@@ -108,6 +117,7 @@ public class LocalMap extends BasicGameState
 	//Renders the graphics and does basic calculations on where the player is standing, interactions, etc.
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
+		
 		arg2.setFont(crux);
 		
 		int xloc = 100;
@@ -126,13 +136,16 @@ public class LocalMap extends BasicGameState
 			yloc+=x[0].ysize;
 		}
 		
+		//Player in the middle of movement switch
 		if(!p1.moving)
 		{
+			//If the player is not moving, draw the player on the tile they are standing on.
 			p1.draw(currentMap.tiles[p1.x][p1.y]);
 		}
 		else
 		{
-			
+			//Otherwise, draw them in between the tiles as denoted by a number that tells the pixel offset.
+			//The subtracted offset is based on direction.
 			if(p1.direction == 3)
 			{
 				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX-(float)p1.between , currentMap.tiles[p1.x][p1.y].cornerY);
@@ -150,7 +163,8 @@ public class LocalMap extends BasicGameState
 				p1.sprite.draw(currentMap.tiles[p1.x][p1.y].cornerX, currentMap.tiles[p1.x][p1.y].cornerY-(float)p1.between);
 			}
 				
-			p1.between+=4;
+			p1.between+=2;
+			//Once the offset has reached the tile, stop moving and draw the proper standing sprite.
 			if(p1.between >= 0.0)
 			{
 				p1.between = -30;
@@ -177,14 +191,14 @@ public class LocalMap extends BasicGameState
 
 		}
 		
-		
+		//Handling interaction with tile
 		if(interacting && !intro)
 		{
 			Tile interacted = null;
+			//Deciding which tile to interact with based on the direction the player is facing.
 			switch(p1.direction)
 			{
 				case 0:
-					
 					interacted = currentMap.tiles[p1.x-1][p1.y];
 					break;
 				case 1:
@@ -201,23 +215,16 @@ public class LocalMap extends BasicGameState
 
 			if(!dialogue.equals("null"))
 			{
-				//TEST MORE
-				/*
-				arg2.drawRect(199, 4, (dialogue.length()*10)+2, 52);
-				arg2.drawRect(200, 5, dialogue.length()*10, 50);
-				arg2.setColor(Color.black);
-				arg2.fillRect(201, 6, (dialogue.length()*10)-1, 49);
-				arg2.setColor(Color.white);
-				arg2.drawString(dialogue, 230, 10);
-				*/
 				drawTextBox(dialogue,arg2);
 			}
+			//handling for tiles without interaction text. The tile file will say "null"
 			else if(dialogue.equals("null") && !intro)
 			{
 				interacting = !interacting;
 			}
 			
 		}
+		//The opening dialogue when you enter a map. Null for no text, anything else for opening text.
 		else if(intro)
 		{
 
@@ -233,6 +240,7 @@ public class LocalMap extends BasicGameState
 		
 	}
 	
+	//Wrapper method for drawstring, draws the entire text box with string "Text"
 	public void drawTextBox(String text, Graphics g)
 	{
 		g.drawRect(199, 4, (text.length()*10)+2, 52);
@@ -243,6 +251,7 @@ public class LocalMap extends BasicGameState
 		g.drawString(text,203,23);
 	}
 
+	//Some basic game logic, checks if the current tile is a "door" tile, and checks when to change into the battle state.
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
 		for(int[] x : currentMap.doors)
@@ -261,35 +270,42 @@ public class LocalMap extends BasicGameState
 		}
 	}
 	
+	//carries out functions based on key pressed
 	public void keyPressed(int key, char c)
 	{
+		//If ESC, exit game.
 		if(key == 1)
 		{
 			gc.exit();
 		}
 		System.out.println(key);
 		
+		//If Z, initiate or cancel an interaction with the tile in front of you.
 		if(key == 44)
 		{
 			interacting = !interacting;
 			intro = false;
 		}
-		
+		//When the player isnt interacting with anything or already moving, handle movement.
 		if(!interacting && !p1.moving)
 		{
 		
 			switch(key)
 			{
+			
+			//DOWN, LEFT, AND RIGHT DO THE SAME THING AS UP, BUT IN THE OTHER CARDINAL DIRECTIONS. ONLY UP IS EXPLAINED.
+			
 			//up
 			case 200:
 				
+				//Set direction and sprite to the moving version
 				p1.direction = 0;
-
 				p1.sprite = p1.movingUpSprite;
 				
+				//only move if you can walk on the next tile
 				if(currentMap.tiles[p1.x-1][p1.y].walkable)
-
 				{
+					//Handle boss tile initiating battle, change the next fight to the boss and initiate the fight boolean.
 					if (currentMap.tiles[p1.x-1][p1.y].name.contains("6.png"))
 					{
 						File f = new File("src/data/battle_enemy.txt");
@@ -318,12 +334,15 @@ public class LocalMap extends BasicGameState
 							System.out.println("Damn.");
 						}
 					}
+					//Generate a number to match a 5% chance to initiate battle when moving tiles.
 					int ch = generator.nextInt(100);
 					p1.x--;
 					p1.between = -30;
 					p1.moving = true;
 					if (ch < 5)
 					{
+						
+						//Write enemy data to file in order for the battle state to access it.
 						File f = new File("src/data/battle_enemy.txt");
 						int enemyfile = generator.nextInt(2) + 1;
 						File e = new File("src/data/enemy" + enemyfile + ".txt");
@@ -578,15 +597,11 @@ public class LocalMap extends BasicGameState
 		
 	}
 
+	//Get the ID of the state. ID = 1.
 	public int getID()
 	{
 		return 1;
 	}
 	
-	
-	public void showDialogue(String dia)
-	{
-		
-	}
 	
 }
