@@ -5,19 +5,32 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import java.util.Random;
 
+//Class: Enemy
+//By Christian Wettre
+//Due 6/10/16
+//Mr Segall | Data Structures | Period 1
 public class Enemy
 {
     Image sprite;
+    
+    //enemy name and sprite location
     public String spritename;
     public String name;
+    
+    //enemy stats
     public int maxHP;
     public int HP;
     public int atk;
     public int def;
     public int spd;
     public int exp;
+    
     private Random generator;
+    
+    //ultimately unused text in the enemy files
     public String [] flavorText;
+    
+    //constructor; reads enemy from a file
     public Enemy(String enemyFileName)
     {
        
@@ -58,6 +71,7 @@ public class Enemy
        
     }
    
+    //attacks the player
     public int attack(PlayerBattle ply)
     {
 

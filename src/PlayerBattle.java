@@ -1,9 +1,15 @@
 import org.newdawn.slick.Image; 
 import java.util.Random;
- 
+
+//Class: PlayerBattle
+//By Christian Wettre
+//Due 6/10/16
+//Mr Segall | Data Structures | Period 1
 public class PlayerBattle
 {
     Image spriteNormal;
+    
+    //player stats
     public int maxHP;
     public static int HP = 0;
     public int lv = 1;
@@ -12,8 +18,10 @@ public class PlayerBattle
     public int spd;
     public int lck;
     public static int exp = 0;
+    
     Random generator = new Random();
    
+    //constructor; has starting stats which go up based on amount of exp
     public PlayerBattle()
     {
         maxHP = 15;
@@ -21,6 +29,7 @@ public class PlayerBattle
         def = 3;
         spd = 3;
         lck = 3;
+        //for loop making stats go up
         int tempexp = exp;
         for (int i = exp; i > 10; i-= 10)
         {
@@ -39,6 +48,7 @@ public class PlayerBattle
         }
     }
    
+    //attacks an enemy
     public int attack(Enemy other)
     {
        
@@ -59,6 +69,7 @@ public class PlayerBattle
         	return 0;
     }
    
+    //used for the item button, heals 5 hp
     public int heal()
     {
        int diff = maxHP - HP;
@@ -70,6 +81,9 @@ public class PlayerBattle
        }
        return 5;
     }   
+    
+    //used for the escape button, generates a number based on enemy and player speed and a random number. if the random number is
+    //below the speed number, the player flees successfully, otherwise it wastes the turn
     public boolean flee(Enemy other)
     {
         int fleeChance = 60 - (other.spd * 10) + (spd * 10);
