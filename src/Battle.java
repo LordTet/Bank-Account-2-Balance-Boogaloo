@@ -10,6 +10,10 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+//Class: PlayerBattle
+//By Christian Wettre
+//Due 6/10/16
+//Mr Segall | Data Structures | Period 1
 public class Battle extends BasicGameState
 {
 	GameContainer gc;
@@ -69,6 +73,8 @@ public class Battle extends BasicGameState
 		escape = new Image("src/txtr/escape.jpg");
 		escape1 = new Image("src/txtr/escapeactive.png");
 		player = new Image("src/txtr/pcbattle1.png");
+		
+		//player and enemy constructors; enemy is constructed from the previously written to battle_enemy.txt file
 		ply = new PlayerBattle();
 		ene = new Enemy("src/data/battle_enemy.txt");
 		opponent = ene.sprite;
@@ -78,6 +84,7 @@ public class Battle extends BasicGameState
 			isPlayerTurn = false;
 	}
 
+	//renders buttons, player, enemy, box, damage, and stats
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
 	{
 		arg2.drawRect(50, 400, 700, 150);
@@ -141,6 +148,7 @@ public class Battle extends BasicGameState
 		
 	}
 
+	//update method
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
 	{
 		//Buttons are 160 x 60 and are spaced 50 (x) apart
@@ -155,7 +163,7 @@ public class Battle extends BasicGameState
 		{
 			activeFight = false;
 		}
-		if((inp.getAbsoluteMouseX() > 299 && inp.getAbsoluteMouseX() < 459) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 499))
+		if((inp.getAbsoluteMouseX() > 299 && inp.getAbsoluteMouseX() < 459) && (inp.getAbsoluteMouseY() > 449 && inp.getAbsoluteMouseY() < 511))
 		{
 			activeItem = true;
 		}
@@ -163,7 +171,7 @@ public class Battle extends BasicGameState
 		{
 			activeItem = false;
 		}
-		if((inp.getAbsoluteMouseX() > 499 && inp.getAbsoluteMouseX() < 661) && (inp.getAbsoluteMouseY() > 461 && inp.getAbsoluteMouseY() < 499))
+		if((inp.getAbsoluteMouseX() > 499 && inp.getAbsoluteMouseX() < 661) && (inp.getAbsoluteMouseY() > 449 && inp.getAbsoluteMouseY() < 511))
 		{
 			activeEscape = true;
 		}
@@ -179,9 +187,14 @@ public class Battle extends BasicGameState
 			
 			dcount = 30;
 			isPlayerTurn = false;
-			//ends battle
+			//ends battle and gives exp
 			if(ene.HP <= 0)
 			{
+				//ends game if boss is defeated
+				if (ene.name.equals("Cyber Angel"))
+				{
+					game.enterState(0);
+				}
 				ply.exp += ene.exp;
 				
 				game.enterState(1);
